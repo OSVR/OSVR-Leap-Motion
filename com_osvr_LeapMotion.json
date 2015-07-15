@@ -1,0 +1,60 @@
+{
+	"deviceVendor": "Leap Motion",
+	"deviceName": "Leap Motion Controller",
+	"author": "Zach Kinstner <zach@aestheticinteractive.com>",
+	"version": 1,
+	"lastModified": "2015-07-08",
+	"interfaces": {
+		"imaging": {
+			"count": 2
+		},
+		"analog": {
+			"count": 3
+		},
+		"tracker": {
+			"count": 12,
+			"position": true,
+			"orientation": true
+		}
+	},
+	"semantic": {
+		"camera": {
+			"left": "imaging/0",
+			"right": "imaging/1"
+		},
+		"count": {
+			"hands": "analog/0",
+			"fingers": "analog/1",
+			"tools": "analog/2"
+		},
+		"hands": {
+			"left": {
+				"palm": "tracker/0",
+				"thumb": "tracker/1",
+				"index": "tracker/2",
+				"middle": "tracker/3",
+				"ring": "tracker/4",
+				"pinky": "tracker/5"
+			},
+			"right": {
+				"palm": "tracker/6",
+				"thumb": "tracker/7",
+				"index": "tracker/8",
+				"middle": "tracker/9",
+				"ring": "tracker/10",
+				"pinky": "tracker/11"
+			}
+		}
+	},
+	"automaticAliases": {
+		"/camera/left":  "semantic/camera/left",
+		"/camera/right":  "semantic/camera/right",
+		"/countTest": "semantic/count/*",
+		"/hands": "semantic/hands/*",
+
+		"/me/hands/left":  "semantic/hands/left/palm",
+		"/me/hands/right": "semantic/hands/right/palm",
+		"/camera":  "semantic/camera/left",
+		"/controller/left/trigger": "semantic/count/hands"
+	}
+}
