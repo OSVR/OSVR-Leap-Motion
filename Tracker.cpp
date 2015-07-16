@@ -11,6 +11,31 @@ Tracker::Tracker(const osvr::pluginkit::DeviceToken& pDeviceToken,
 									mDeviceToken(pDeviceToken), mController(pController), 
 									mTrackerInterface(NULL) {
 	osvrDeviceTrackerConfigure(pOptions, &mTrackerInterface);
+
+	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_METACARPAL] = ThumbMeta;
+	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_PROXIMAL] = ThumbProx;
+	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_INTERMEDIATE] = ThumbInter;
+	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_DISTAL] = ThumbDist;
+
+	mChannelMap[Finger::Type::TYPE_INDEX][Bone::TYPE_METACARPAL] = IndexMeta;
+	mChannelMap[Finger::Type::TYPE_INDEX][Bone::TYPE_PROXIMAL] = IndexProx;
+	mChannelMap[Finger::Type::TYPE_INDEX][Bone::TYPE_INTERMEDIATE] = IndexInter;
+	mChannelMap[Finger::Type::TYPE_INDEX][Bone::TYPE_DISTAL] = IndexDist;
+
+	mChannelMap[Finger::Type::TYPE_MIDDLE][Bone::TYPE_METACARPAL] = MiddleMeta;
+	mChannelMap[Finger::Type::TYPE_MIDDLE][Bone::TYPE_PROXIMAL] = MiddleProx;
+	mChannelMap[Finger::Type::TYPE_MIDDLE][Bone::TYPE_INTERMEDIATE] = MiddleInter;
+	mChannelMap[Finger::Type::TYPE_MIDDLE][Bone::TYPE_DISTAL] = MiddleDist;
+
+	mChannelMap[Finger::Type::TYPE_RING][Bone::TYPE_METACARPAL] = RingMeta;
+	mChannelMap[Finger::Type::TYPE_RING][Bone::TYPE_PROXIMAL] = RingProx;
+	mChannelMap[Finger::Type::TYPE_RING][Bone::TYPE_INTERMEDIATE] = RingInter;
+	mChannelMap[Finger::Type::TYPE_RING][Bone::TYPE_DISTAL] = RingDist;
+
+	mChannelMap[Finger::Type::TYPE_PINKY][Bone::TYPE_METACARPAL] = PinkyMeta;
+	mChannelMap[Finger::Type::TYPE_PINKY][Bone::TYPE_PROXIMAL] = PinkyProx;
+	mChannelMap[Finger::Type::TYPE_PINKY][Bone::TYPE_INTERMEDIATE] = PinkyInter;
+	mChannelMap[Finger::Type::TYPE_PINKY][Bone::TYPE_DISTAL] = PinkyDist;
 }
 
 /*----------------------------------------------------------------------------------------------------*/
@@ -27,15 +52,18 @@ void Tracker::update() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-void Tracker::sendHand(Leap::Hand pHand) {
+void Tracker::sendHand(const Hand& pHand) {
 	if ( !pHand.isValid() ) {
 		return;
 	}
 
 	bool isLeft = pHand.isLeft();
+	Arm arm = pHand.arm();
 	FingerList fingers = pHand.fingers();
 	int fingerCount = fingers.count();
 
+	sendPose(Elbow, isLeft, arm.elbowPosition(), arm.basis());
+	sendPose(Wrist, isLeft, arm.wristPosition(), arm.basis());
 	sendPose(Palm, isLeft, pHand.palmPosition(), pHand.basis());
 
 	for ( int i = 0 ; i < fingerCount ; i++ ) {
@@ -44,38 +72,23 @@ void Tracker::sendHand(Leap::Hand pHand) {
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-void Tracker::sendFinger(Leap::Finger pFinger, bool pIsLeft) {
+void Tracker::sendFinger(const Finger& pFinger, bool pIsLeft) {
 	Finger::Type type = pFinger.type();
-	Bone bone = pFinger.bone(Bone::TYPE_DISTAL);
-	Channel channel;
 
-	switch ( type ) {
-		case Finger::Type::TYPE_THUMB:
-			channel = ThumbTip;
-			break;
-
-		case Finger::Type::TYPE_INDEX:
-			channel = IndexTip;
-			break;
-
-		case Finger::Type::TYPE_MIDDLE:
-			channel = MiddleTip;
-			break;
-
-		case Finger::Type::TYPE_RING:
-			channel = RingTip;
-			break;
-
-		case Finger::Type::TYPE_PINKY:
-			channel = PinkyTip;
-			break;
-	}
-
-	sendPose(channel, pIsLeft, bone.center(), bone.basis());
+	sendBone(pFinger.bone(Bone::TYPE_METACARPAL), type, pIsLeft);
+	sendBone(pFinger.bone(Bone::TYPE_PROXIMAL), type, pIsLeft);
+	sendBone(pFinger.bone(Bone::TYPE_INTERMEDIATE), type, pIsLeft);
+	sendBone(pFinger.bone(Bone::TYPE_DISTAL), type, pIsLeft);
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-void Tracker::sendPose(Channel pChannel, bool pIsLeft, Leap::Vector pPosition, Leap::Matrix pBasis) {
+void Tracker::sendBone(const Bone& pBone, Finger::Type pFingerType, bool pIsLeft) {
+	Channel channel = mChannelMap[pFingerType][pBone.type()];
+	sendPose(channel, pIsLeft, pBone.center(), pBone.basis());
+}
+
+/*----------------------------------------------------------------------------------------------------*/
+void Tracker::sendPose(Channel pChannel, bool pIsLeft, const Vector& pPosition, const Matrix& pBasis) {
 	OSVR_PoseState pose;
 	pose.translation = getOsvrVector(pPosition);
 	pose.rotation = getOsvrQuaternion(pBasis);
@@ -88,7 +101,7 @@ void Tracker::sendPose(Channel pChannel, bool pIsLeft, Leap::Vector pPosition, L
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-OSVR_Vec3 Tracker::getOsvrVector(Leap::Vector pVector) {
+OSVR_Vec3 Tracker::getOsvrVector(const Vector& pVector) {
 	const float scale = 0.001f;
 
 	OSVR_Vec3 vec;
@@ -99,7 +112,7 @@ OSVR_Vec3 Tracker::getOsvrVector(Leap::Vector pVector) {
 }
 
 /*--------------------------------------------------------------------------------------------*/
-OSVR_Quaternion Tracker::getOsvrQuaternion(Leap::Matrix pBasis) {
+OSVR_Quaternion Tracker::getOsvrQuaternion(const Matrix& pBasis) {
 	//Code adapted from:
 	//http://euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion
 

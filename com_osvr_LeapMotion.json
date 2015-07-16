@@ -12,7 +12,7 @@
 			"count": 3
 		},
 		"tracker": {
-			"count": 12,
+			"count": 46,
 			"position": true,
 			"orientation": true
 		}
@@ -29,22 +29,80 @@
 			"fingers": "analog/1",
 			"tools": "analog/2"
 		},
-		"hands": {
+		"arms": {
 			"left": {
-				"palm": "tracker/0",
-				"thumb": "tracker/1",
-				"index": "tracker/2",
-				"middle": "tracker/3",
-				"ring": "tracker/4",
-				"pinky": "tracker/5"
+				"elbow": "tracker/0",
+				"wrist": "tracker/1",
+				"hand": {
+					"palm": "tracker/2",
+					"thumb": {
+						"metacarpal":	"tracker/3",
+						"proximal":		"tracker/4",
+						"intermediate":	"tracker/5",
+						"distal":		"tracker/6"
+					},
+					"index": {
+						"metacarpal":	"tracker/7",
+						"proximal":		"tracker/8",
+						"intermediate":	"tracker/9",
+						"distal":		"tracker/10"
+					},
+					"middle": {
+						"metacarpal":	"tracker/11",
+						"proximal":		"tracker/12",
+						"intermediate":	"tracker/13",
+						"distal":		"tracker/14"
+					},
+					"ring": {
+						"metacarpal":	"tracker/15",
+						"proximal":		"tracker/16",
+						"intermediate":	"tracker/17",
+						"distal":		"tracker/18"
+					},
+					"pinky": {
+						"metacarpal":	"tracker/19",
+						"proximal":		"tracker/20",
+						"intermediate":	"tracker/21",
+						"distal":		"tracker/22"
+					}
+				}
 			},
 			"right": {
-				"palm": "tracker/6",
-				"thumb": "tracker/7",
-				"index": "tracker/8",
-				"middle": "tracker/9",
-				"ring": "tracker/10",
-				"pinky": "tracker/11"
+				"elbow": "tracker/23",
+				"wrist": "tracker/24",
+				"hand": {
+					"palm": "tracker/25",
+					"thumb": {
+						"metacarpal":	"tracker/26",
+						"proximal":		"tracker/27",
+						"intermediate":	"tracker/28",
+						"distal":		"tracker/29"
+					},
+					"index": {
+						"metacarpal":	"tracker/30",
+						"proximal":		"tracker/31",
+						"intermediate":	"tracker/32",
+						"distal":		"tracker/33"
+					},
+					"middle": {
+						"metacarpal":	"tracker/34",
+						"proximal":		"tracker/35",
+						"intermediate":	"tracker/36",
+						"distal":		"tracker/37"
+					},
+					"ring": {
+						"metacarpal":	"tracker/38",
+						"proximal":		"tracker/39",
+						"intermediate":	"tracker/40",
+						"distal":		"tracker/41"
+					},
+					"pinky": {
+						"metacarpal":	"tracker/42",
+						"proximal":		"tracker/43",
+						"intermediate":	"tracker/44",
+						"distal":		"tracker/45"
+					}
+				}
 			}
 		}
 	},
@@ -54,10 +112,10 @@
 		"/camera/leftCalibration":  "semantic/camera/leftCalibration",
 		"/camera/rightCalibration":  "semantic/camera/rightCalibration",
 		"/countTest": "semantic/count/*",
-		"/hands": "semantic/hands/*",
+		"/arms": "semantic/arms/*",
 
-		"/me/hands/left":  "semantic/hands/left/palm",
-		"/me/hands/right": "semantic/hands/right/palm",
+		"/me/hands/left":  "semantic/arms/left/hand/palm",
+		"/me/hands/right": "semantic/arms/right/hand/palm",
 		"/camera": "semantic/camera/leftCalibration",
 		"/controller/left/trigger": "semantic/count/hands"
 	}
