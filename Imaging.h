@@ -19,7 +19,8 @@ namespace LeapOsvr {
 			const osvr::pluginkit::DeviceToken& mDeviceToken;
 			OSVR_ImagingDeviceInterfaceObject* mImagingInterface;
 
-			void sendCameraImage(Leap::Image* pImage, OSVR_TimeValue* pTime);
+			void sendCameraImage(const Leap::Image& pImage, const OSVR_TimeValue& pTime);
+			void sendCalibrationImage(const Leap::Image& pImage, const OSVR_TimeValue& pTime);
 
 	};
 

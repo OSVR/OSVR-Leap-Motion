@@ -6,7 +6,7 @@
 	"lastModified": "2015-07-08",
 	"interfaces": {
 		"imaging": {
-			"count": 2
+			"count": 4
 		},
 		"analog": {
 			"count": 3
@@ -20,7 +20,9 @@
 	"semantic": {
 		"camera": {
 			"left": "imaging/0",
-			"right": "imaging/1"
+			"right": "imaging/1",
+			"leftCalibration": "imaging/2",
+			"rightCalibration": "imaging/3"
 		},
 		"count": {
 			"hands": "analog/0",
@@ -49,12 +51,14 @@
 	"automaticAliases": {
 		"/camera/left":  "semantic/camera/left",
 		"/camera/right":  "semantic/camera/right",
+		"/camera/leftCalibration":  "semantic/camera/leftCalibration",
+		"/camera/rightCalibration":  "semantic/camera/rightCalibration",
 		"/countTest": "semantic/count/*",
 		"/hands": "semantic/hands/*",
 
 		"/me/hands/left":  "semantic/hands/left/palm",
 		"/me/hands/right": "semantic/hands/right/palm",
-		"/camera":  "semantic/camera/left",
+		"/camera": "semantic/camera/leftCalibration",
 		"/controller/left/trigger": "semantic/count/hands"
 	}
 }
