@@ -111,7 +111,7 @@ OSVR_Vec3 Tracker::getOsvrVector(const Vector& pVector) {
 	return vec;
 }
 
-/*--------------------------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------------------------------*/
 OSVR_Quaternion Tracker::getOsvrQuaternion(const Matrix& pBasis) {
 	//Code adapted from:
 	//http://euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion
