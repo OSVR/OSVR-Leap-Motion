@@ -6,19 +6,25 @@ using namespace LeapOsvr;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-Imaging::Imaging(const osvr::pluginkit::DeviceToken& pDeviceToken, 
-						OSVR_DeviceInitOptions pOptions, const Controller& pController) : 
-						mDeviceToken(pDeviceToken), mController(pController), mImagingInterface(NULL) {
-	osvrDeviceImagingConfigure(pOptions, &mImagingInterface, 4);
+Imaging::Imaging(osvr::pluginkit::DeviceToken& pDeviceToken, 
+				OSVR_DeviceInitOptions pOptions, const Controller& pController) : 
+				mDeviceToken(pDeviceToken), mController(pController), mImagingDeviceInterface(NULL) {
+	osvrDeviceImagingConfigure(pOptions, &mImagingDeviceInterface, 4);
+	mImagingInterface = osvr::pluginkit::ImagingInterface(pOptions);
+	mDistortionCache[0] = NULL;
+	mDistortionCache[1] = NULL;
+}
+
+/*----------------------------------------------------------------------------------------------------*/
+Imaging::~Imaging() {
+	delete mDistortionCache[0];
+	delete mDistortionCache[1];
 }
 
 /*----------------------------------------------------------------------------------------------------*/
 void Imaging::update() {
 	ImageList images = mController.images();
 	int imageCount = images.count();
-	OSVR_TimeValue time;
-
-	osvrTimeValueGetNow(&time);
 
 	if ( imageCount > 2 ) {
 		std::cout << "This plugin does not support more than two Leap Motion images." << std::endl;
@@ -26,64 +32,62 @@ void Imaging::update() {
 	}
 
 	for ( int i = 0 ; i < imageCount ; i++ ) {
-		sendCameraImage(images[i], time);
-		sendCalibrationImage(images[i], time);
+		Image image = images[i];
+
+		sendCameraImage(image);
+		sendCalibrationImage(image);
 	}
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-void Imaging::sendCameraImage(const Image& pImage, const OSVR_TimeValue& pTime) {
-	//From OSVR docs: "...a copy of the image data, will be destroyed when no longer needed..."
-
-	OSVR_ImagingMetadata meta;
-	meta.width = pImage.width();
-	meta.height = pImage.height();
-	meta.depth = pImage.bytesPerPixel();
-	meta.channels = 1;
-	meta.type = OSVR_ImagingValueType::OSVR_IVT_UNSIGNED_INT;
-
-	int index = pImage.id();
-	int dataSize = meta.width * meta.height * meta.depth;
+void Imaging::sendCameraImage(const Image& pImage) {
+	int width = pImage.width();
+	int height = pImage.height();
+	int srcLen = width*height;
+	OSVR_ChannelCount channel = pImage.id();
 	const unsigned char* imageData = pImage.data();
-	OSVR_ImageBufferElement buffer[640*240*1] = {};
+	cv::Mat matrix = cv::Mat(height, width, CV_8UC1);
 
-	for ( int i = 0 ; i < dataSize ; i++ ) {
-		buffer[i] = imageData[i];
-
-		//TODO: the "Imaging_cpp.exe" test only shows images when console output is enabled (why?)
-		//if ( i/640 == 120 && i%64 == 0 ) { std::cout << (int)imageData[i] << "\t"; }
+	for ( int i = 0 ; i < srcLen ; i++ ) {
+		matrix.at<unsigned char>(i/width, i%width) = imageData[i];
 	}
 
-	//std::cout << std::endl;// << std::flush;
-	osvrDeviceImagingReportFrame(mDeviceToken, mImagingInterface, meta, buffer, index, &pTime);
+	mDeviceToken.send(mImagingInterface, osvr::pluginkit::ImagingMessage(matrix, channel));
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-void Imaging::sendCalibrationImage(const Image& pImage, const OSVR_TimeValue& pTime) {
-	const int width = 64;
-	const int height = 64;
-	const int srcChannels = 2;
-	const int destChannels = 3; //using 2 channels is not supported
-	const int srcLen = width*height*srcChannels;
+void Imaging::sendCalibrationImage(const Image& pImage) {
+	int id = pImage.id();
 
-	OSVR_ImagingMetadata meta;
-	meta.width = width;
-	meta.height = height;
-	meta.depth = 4;
-	meta.channels = destChannels;
-	meta.type = OSVR_ImagingValueType::OSVR_IVT_FLOATING_POINT;
-
-	int index = 2+pImage.id();
-	const float* imageData = pImage.distortion();
-	float imageCopy[width*height*destChannels] = {};
-
-	for ( int i = 0 ; i < srcLen ; i++ ) {
-		int copyI = (i/srcChannels*destChannels + i%srcChannels);
-		imageCopy[copyI] = imageData[i];
+	if ( mDistortionCache[id] == NULL ) {
+		cacheCalibrationImage(pImage);
 	}
 
-	OSVR_ImageBufferElement* buffer = reinterpret_cast<OSVR_ImageBufferElement*>(imageCopy);
-	osvrDeviceImagingReportFrame(mDeviceToken, mImagingInterface, meta, buffer, index, &pTime);
+	OSVR_ChannelCount channel = 2+id;
+	cv::Mat matrix = mDistortionCache[id]->clone();
+
+	mDeviceToken.send(mImagingInterface, osvr::pluginkit::ImagingMessage(matrix, channel));
+}
+
+/*----------------------------------------------------------------------------------------------------*/
+void Imaging::cacheCalibrationImage(const Image& pImage) {
+	const int width = 64;
+	const int height = 64;
+	const int srcLen = width*height;
+	const int srcChannels = 2;
+
+	int id = pImage.id();
+	const float* srcData = pImage.distortion();
+	cv::Mat* cache = new cv::Mat(height, width, CV_32FC3);
+
+	for ( int i = 0 ; i < srcLen ; i++ ) {
+		float* cell = cache->at<float[3]>(i/width, i%width);
+		cell[0] = srcData[i*2];
+		cell[1] = srcData[i*2+1];
+		cell[2] = 0;
+	}
+
+	mDistortionCache[id] = cache;
 }

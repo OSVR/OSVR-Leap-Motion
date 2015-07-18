@@ -107,16 +107,16 @@
 		}
 	},
 	"automaticAliases": {
-		"/camera/left":  "semantic/camera/left",
-		"/camera/right":  "semantic/camera/right",
-		"/camera/leftCalibration":  "semantic/camera/leftCalibration",
-		"/camera/rightCalibration":  "semantic/camera/rightCalibration",
+		"/camera/left": "semantic/camera/left",
+		"/camera/right": "semantic/camera/right",
+		"/camera/leftCalibration": "semantic/camera/leftCalibration",
+		"/camera/rightCalibration": "semantic/camera/rightCalibration",
 		"/countTest": "semantic/count/*",
 		"/arms": "semantic/arms/*",
 
-		"/me/hands/left":  "semantic/arms/left/hand/palm",
+		"/me/hands/left": "semantic/arms/left/hand/palm",
 		"/me/hands/right": "semantic/arms/right/hand/palm",
-		"/camera": "semantic/camera/leftCalibration",
+		"/camera": "semantic/camera/left",
 		"/controller/left/trigger": "semantic/count/hands"
 	}
 }

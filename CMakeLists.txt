@@ -17,6 +17,7 @@ osvr_convert_json(com_osvr_LeapMotion_json
 
 # Be able to find our generated header file.
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+include_directories(com_osvr_LeapMotion ${OpenCV_INCLUDE_DIRS})
 
 # This is just a helper function wrapping CMake's add_library command that
 # sets up include dirs, libraries, and naming convention (no leading "lib")
@@ -41,4 +42,5 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 
 # If you use other libraries, find them and add a line like:
 target_link_libraries(com_osvr_LeapMotion
-	${LEAP_SDK_PATH}/lib/x86/Leap.lib)
+	${LEAP_SDK_PATH}/lib/x86/Leap.lib
+	${OpenCV_DIR}/opencv_core2410.lib)
