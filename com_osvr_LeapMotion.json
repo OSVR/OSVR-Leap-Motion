@@ -21,8 +21,8 @@
 		"camera": {
 			"left": "imaging/0",
 			"right": "imaging/1",
-			"leftCalibration": "imaging/2",
-			"rightCalibration": "imaging/3"
+			"leftDistortion": "imaging/2",
+			"rightDistortion": "imaging/3"
 		},
 		"count": {
 			"hands": "analog/0",
@@ -109,8 +109,8 @@
 	"automaticAliases": {
 		"/camera/left": "semantic/camera/left",
 		"/camera/right": "semantic/camera/right",
-		"/camera/leftCalibration": "semantic/camera/leftCalibration",
-		"/camera/rightCalibration": "semantic/camera/rightCalibration",
+		"/camera/leftDistortion": "semantic/camera/leftDistortion",
+		"/camera/rightDistortion": "semantic/camera/rightDistortion",
 		"/countTest": "semantic/count/*",
 		"/arms": "semantic/arms/*",
 

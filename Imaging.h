@@ -20,10 +20,11 @@ namespace LeapOsvr {
 			OSVR_ImagingDeviceInterfaceObject* mImagingDeviceInterface;
 			osvr::pluginkit::ImagingInterface mImagingInterface;
 			cv::Mat* mDistortionCache[2];
+			OSVR_TimeValue_Seconds mNextDistortionSecond;
 
 			void sendCameraImage(const Leap::Image& pImage);
-			void sendCalibrationImage(const Leap::Image& pImage);
-			void cacheCalibrationImage(const Leap::Image& pImage);
+			void sendDistortionImage(const Leap::Image& pImage);
+			void cacheDistortionImage(const Leap::Image& pImage);
 
 	};
 

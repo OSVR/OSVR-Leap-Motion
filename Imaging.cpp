@@ -14,6 +14,7 @@ Imaging::Imaging(osvr::pluginkit::DeviceToken& pDeviceToken,
 	mImagingInterface = osvr::pluginkit::ImagingInterface(pOptions);
 	mDistortionCache[0] = NULL;
 	mDistortionCache[1] = NULL;
+	mNextDistortionSecond = 0;
 }
 
 /*----------------------------------------------------------------------------------------------------*/
@@ -27,6 +28,15 @@ void Imaging::update() {
 	ImageList images = mController.images();
 	int imageCount = images.count();
 
+	OSVR_TimeValue time;
+	osvrTimeValueGetNow(&time);
+
+	bool sendDistortion = (time.seconds >= mNextDistortionSecond);
+	
+	if ( sendDistortion ) {
+		mNextDistortionSecond = time.seconds+2; //send every X seconds
+	}
+
 	if ( imageCount > 2 ) {
 		std::cout << "This plugin does not support more than two Leap Motion images." << std::endl;
 		imageCount = 2;
@@ -36,7 +46,10 @@ void Imaging::update() {
 		Image image = images[i];
 
 		sendCameraImage(image);
-		sendCalibrationImage(image);
+
+		if ( sendDistortion ) {
+			sendDistortionImage(image);
+		}
 	}
 }
 
@@ -59,11 +72,11 @@ void Imaging::sendCameraImage(const Image& pImage) {
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-void Imaging::sendCalibrationImage(const Image& pImage) {
+void Imaging::sendDistortionImage(const Image& pImage) {
 	int id = pImage.id();
 
 	if ( mDistortionCache[id] == NULL ) {
-		cacheCalibrationImage(pImage);
+		cacheDistortionImage(pImage);
 	}
 
 	OSVR_ChannelCount channel = 2+id;
@@ -73,7 +86,7 @@ void Imaging::sendCalibrationImage(const Image& pImage) {
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-void Imaging::cacheCalibrationImage(const Image& pImage) {
+void Imaging::cacheDistortionImage(const Image& pImage) {
 	const int width = 64;
 	const int height = 64;
 	const int srcLen = width*height;
