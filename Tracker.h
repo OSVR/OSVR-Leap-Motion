@@ -1,8 +1,6 @@
 #include <osvr/PluginKit/PluginKit.h>
 #include <osvr/PluginKit/TrackerInterfaceC.h>
 #include <osvr/Util/Pose3C.h>
-#include <iostream>
-#include <map>
 #include "Leap.h"
 
 namespace LeapOsvr {
