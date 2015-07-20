@@ -19,6 +19,7 @@ osvr_convert_json(com_osvr_LeapMotion_json
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 include_directories(com_osvr_LeapMotion
+	${LEAP_SDK_PATH}/include
 	${OPENCV_INCLUDE_DIR}
 	${EIGEN3_INCLUDE_DIR})
 
@@ -36,9 +37,6 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 	ControllerDevice.h
 	Imaging.cpp
 	Imaging.h
-	Leap.h
-    Leap.i
-    LeapMath.h
 	Tracker.cpp
 	Tracker.h
     "${CMAKE_CURRENT_BINARY_DIR}/com_osvr_LeapMotion_json.h")

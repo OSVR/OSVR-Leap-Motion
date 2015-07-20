@@ -1,4 +1,5 @@
 #include "Imaging.h"
+#include <iostream>
 
 using namespace Leap;
 using namespace LeapOsvr;

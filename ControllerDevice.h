@@ -1,5 +1,4 @@
 #include <osvr/PluginKit/PluginKit.h>
-#include <iostream>
 #include "Leap.h"
 #include "Analog.h"
 #include "Imaging.h"

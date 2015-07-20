@@ -14,12 +14,6 @@ ControllerDevice::ControllerDevice() : mAnalog(NULL), mImaging(NULL), mTracker(N
 
 /*----------------------------------------------------------------------------------------------------*/
 OSVR_ReturnCode ControllerDevice::operator()(OSVR_PluginRegContext pContext) {
-	std::cout << " ### LeapMotionController.isConnected(): " << mController.isConnected() << std::endl;
-
-	/*if ( !mController.isConnected() ) {
-		return OSVR_RETURN_FAILURE;
-	}*/
-
 	if ( mAnalog == NULL ) {
 		initDevice(pContext);
 	}

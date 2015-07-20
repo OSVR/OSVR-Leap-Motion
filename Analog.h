@@ -1,6 +1,5 @@
 #include <osvr/PluginKit/PluginKit.h>
 #include <osvr/PluginKit/AnalogInterfaceC.h>
-#include <iostream>
 #include "Leap.h"
 
 namespace LeapOsvr {

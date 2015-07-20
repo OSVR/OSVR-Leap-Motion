@@ -1,7 +1,5 @@
 #include <osvr/PluginKit/PluginKit.h>
 #include <osvr/PluginKit/ImagingInterface.h>
-#include <iostream>
-#include <string>
 #include "Leap.h"
 
 namespace LeapOsvr {
