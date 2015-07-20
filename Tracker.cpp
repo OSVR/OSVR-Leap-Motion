@@ -114,14 +114,14 @@ OSVR_Vec3 Tracker::getOsvrVector(const Vector& pVector) {
 
 /*----------------------------------------------------------------------------------------------------*/
 OSVR_Quaternion Tracker::getOsvrQuaternion(const Matrix& pBasis) {
-	float colMaj[16] = { //adapted from LeapMath.h
-		pBasis.xBasis.x, pBasis.yBasis.x, pBasis.zBasis.x, pBasis.origin.x,
-		pBasis.xBasis.y, pBasis.yBasis.y, pBasis.zBasis.y, pBasis.origin.y,
-		pBasis.xBasis.z, pBasis.yBasis.z, pBasis.zBasis.z, pBasis.origin.z,
-		0, 0, 0, 1
-	};
+	Eigen::Matrix3f mat = Eigen::Matrix3f();
+	mat << //uses column-major order
+		pBasis.xBasis.x, pBasis.yBasis.x, pBasis.zBasis.x,
+		pBasis.xBasis.y, pBasis.yBasis.y, pBasis.zBasis.y,
+		pBasis.xBasis.z, pBasis.yBasis.z, pBasis.zBasis.z;
 
-	Eigen::Quaternionf eigenQuat = Eigen::Quaternionf(colMaj);
+	Eigen::Quaternionf eigenQuat = Eigen::Quaternionf(mat);
+	eigenQuat.normalize();
 
 	OSVR_Quaternion quat;
 	osvrQuatSetW(&quat, eigenQuat.w());
