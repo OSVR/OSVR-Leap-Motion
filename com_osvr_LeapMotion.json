@@ -19,10 +19,15 @@
 	},
 	"semantic": {
 		"camera": {
-			"left": "imaging/0",
-			"right": "imaging/1",
-			"leftDistortion": "imaging/2",
-			"rightDistortion": "imaging/3"
+			"$target": "imaging/0",
+			"left": {
+				"$target": "imaging/0",
+				"distortion": "imaging/2"
+			},
+			"right": {
+				"$target": "imaging/1",
+				"distortion": "imaging/3"
+			}
 		},
 		"count": {
 			"hands": "analog/0",
@@ -107,16 +112,12 @@
 		}
 	},
 	"automaticAliases": {
-		"/camera/left": "semantic/camera/left",
-		"/camera/right": "semantic/camera/right",
-		"/camera/leftDistortion": "semantic/camera/leftDistortion",
-		"/camera/rightDistortion": "semantic/camera/rightDistortion",
+		"/camera": "semantic/camera/*",
 		"/countTest": "semantic/count/*",
 		"/arms": "semantic/arms/*",
 
 		"/me/hands/left": "semantic/arms/left/hand/palm",
 		"/me/hands/right": "semantic/arms/right/hand/palm",
-		"/camera": "semantic/camera/left",
 		"/controller/left/trigger": "semantic/count/hands"
 	}
 }
