@@ -92,7 +92,7 @@ void Tracker::sendBone(const Bone& pBone, Finger::Type pFingerType, bool pIsLeft
 void Tracker::sendPose(Channel pChannel, bool pIsLeft, const Vector& pPosition, const Matrix& pBasis) {
 	OSVR_PoseState pose;
 	pose.translation = getOsvrVector(pPosition);
-	pose.rotation = getOsvrQuaternion(pBasis);
+	pose.rotation = getOsvrQuaternion(pBasis, pIsLeft);
 
 	OSVR_ChannelCount channel = pChannel+(pIsLeft ? 0 : ChannelsPerHand);
 
@@ -113,12 +113,14 @@ OSVR_Vec3 Tracker::getOsvrVector(const Vector& pVector) {
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-OSVR_Quaternion Tracker::getOsvrQuaternion(const Matrix& pBasis) {
+OSVR_Quaternion Tracker::getOsvrQuaternion(const Matrix& pBasis, bool pIsLeft) {
+	int zMult = (pIsLeft ? -1 : 1);
+
 	Eigen::Matrix3f mat = Eigen::Matrix3f();
 	mat << //uses column-major order
-		pBasis.xBasis.x, pBasis.yBasis.x, pBasis.zBasis.x,
-		pBasis.xBasis.y, pBasis.yBasis.y, pBasis.zBasis.y,
-		pBasis.xBasis.z, pBasis.yBasis.z, pBasis.zBasis.z;
+		pBasis.xBasis.x, pBasis.yBasis.x, pBasis.zBasis.x*zMult,
+		pBasis.xBasis.y, pBasis.yBasis.y, pBasis.zBasis.y*zMult,
+		pBasis.xBasis.z, pBasis.yBasis.z, pBasis.zBasis.z*zMult;
 
 	Eigen::Quaternionf eigenQuat = Eigen::Quaternionf(mat);
 	eigenQuat.normalize();

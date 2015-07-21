@@ -61,7 +61,7 @@ namespace LeapOsvr {
 				const Leap::Vector& pPosition, const Leap::Matrix& pBasis);
 
 			OSVR_Vec3 getOsvrVector(const Leap::Vector& pVector);
-			OSVR_Quaternion getOsvrQuaternion(const Leap::Matrix& pBasis);
+			OSVR_Quaternion getOsvrQuaternion(const Leap::Matrix& pBasis, bool pIsLeft);
 
 	};
 
