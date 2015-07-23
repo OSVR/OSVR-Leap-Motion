@@ -15,9 +15,20 @@ namespace LeapOsvr {
 		private:
 
 			enum Channel {
-				HandCount,
-				FingerCount,
-				ToolCount
+				IsDeviceConnected,
+				IsServiceConnected,
+				IsLeftHandAvailable,
+				IsRightHandAvailable,
+				LeftHandConfidence,
+				RightHandConfidence,
+				LeftHandGrabStrength,
+				RightHandGrabStrength,
+				LeftHandPinchStrength,
+				RightHandPinchStrength,
+				LeftHandPalmWidth,
+				RightHandPalmWidth,
+
+				AnalogChannelCount //must be the last element
 			};
 
 			const Leap::Controller& mController;

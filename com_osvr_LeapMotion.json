@@ -3,13 +3,13 @@
 	"deviceName": "Leap Motion Controller",
 	"author": "Zach Kinstner <zach@aestheticinteractive.com>",
 	"version": 1,
-	"lastModified": "2015-07-08",
+	"lastModified": "2015-07-23",
 	"interfaces": {
 		"imaging": {
 			"count": 4
 		},
 		"analog": {
-			"count": 3
+			"count": 12
 		},
 		"tracker": {
 			"count": 46,
@@ -29,83 +29,92 @@
 				"distortion": "imaging/3"
 			}
 		},
-		"count": {
-			"hands": "analog/0",
-			"fingers": "analog/1",
-			"tools": "analog/2"
+		"connection": {
+			"device": "analog/0",
+			"service": "analog/1"
 		},
 		"arms": {
 			"left": {
+				"available": "analog/2",
 				"elbow": "tracker/0",
 				"wrist": "tracker/1",
 				"hand": {
+					"confidence": "analog/4",
+					"grabStrength": "analog/6",
+					"pinchStrength": "analog/8",
+					"palmWidth": "analog/10",
 					"palm": "tracker/2",
 					"thumb": {
-						"metacarpal":	"tracker/3",
-						"proximal":		"tracker/4",
-						"intermediate":	"tracker/5",
-						"distal":		"tracker/6"
+						"metacarpal": "tracker/3",
+						"proximal": "tracker/4",
+						"intermediate": "tracker/5",
+						"distal": "tracker/6"
 					},
 					"index": {
-						"metacarpal":	"tracker/7",
-						"proximal":		"tracker/8",
-						"intermediate":	"tracker/9",
-						"distal":		"tracker/10"
+						"metacarpal": "tracker/7",
+						"proximal": "tracker/8",
+						"intermediate": "tracker/9",
+						"distal": "tracker/10"
 					},
 					"middle": {
-						"metacarpal":	"tracker/11",
-						"proximal":		"tracker/12",
-						"intermediate":	"tracker/13",
-						"distal":		"tracker/14"
+						"metacarpal": "tracker/11",
+						"proximal": "tracker/12",
+						"intermediate": "tracker/13",
+						"distal": "tracker/14"
 					},
 					"ring": {
-						"metacarpal":	"tracker/15",
-						"proximal":		"tracker/16",
-						"intermediate":	"tracker/17",
-						"distal":		"tracker/18"
+						"metacarpal": "tracker/15",
+						"proximal": "tracker/16",
+						"intermediate": "tracker/17",
+						"distal": "tracker/18"
 					},
 					"pinky": {
-						"metacarpal":	"tracker/19",
-						"proximal":		"tracker/20",
-						"intermediate":	"tracker/21",
-						"distal":		"tracker/22"
+						"metacarpal": "tracker/19",
+						"proximal": "tracker/20",
+						"intermediate": "tracker/21",
+						"distal": "tracker/22"
 					}
 				}
 			},
 			"right": {
+				"available": "analog/3",
 				"elbow": "tracker/23",
 				"wrist": "tracker/24",
 				"hand": {
+					"confidence": "analog/5",
+					"grabStrength": "analog/7",
+					"pinchStrength": "analog/9",
+					"palmWidth": "analog/11",
 					"palm": "tracker/25",
 					"thumb": {
-						"metacarpal":	"tracker/26",
-						"proximal":		"tracker/27",
-						"intermediate":	"tracker/28",
-						"distal":		"tracker/29"
+						"metacarpal": "tracker/26",
+						"proximal": "tracker/27",
+						"intermediate": "tracker/28",
+						"distal": "tracker/29"
 					},
 					"index": {
-						"metacarpal":	"tracker/30",
-						"proximal":		"tracker/31",
-						"intermediate":	"tracker/32",
-						"distal":		"tracker/33"
+						"metacarpal": "tracker/30",
+						"proximal": "tracker/31",
+						"intermediate": "tracker/32",
+						"distal": "tracker/33"
 					},
 					"middle": {
-						"metacarpal":	"tracker/34",
-						"proximal":		"tracker/35",
-						"intermediate":	"tracker/36",
-						"distal":		"tracker/37"
+						"metacarpal": "tracker/34",
+						"proximal": "tracker/35",
+						"intermediate": "tracker/36",
+						"distal": "tracker/37"
 					},
 					"ring": {
-						"metacarpal":	"tracker/38",
-						"proximal":		"tracker/39",
-						"intermediate":	"tracker/40",
-						"distal":		"tracker/41"
+						"metacarpal": "tracker/38",
+						"proximal": "tracker/39",
+						"intermediate": "tracker/40",
+						"distal": "tracker/41"
 					},
 					"pinky": {
-						"metacarpal":	"tracker/42",
-						"proximal":		"tracker/43",
-						"intermediate":	"tracker/44",
-						"distal":		"tracker/45"
+						"metacarpal": "tracker/42",
+						"proximal": "tracker/43",
+						"intermediate": "tracker/44",
+						"distal": "tracker/45"
 					}
 				}
 			}
@@ -113,11 +122,11 @@
 	},
 	"automaticAliases": {
 		"/camera": "semantic/camera/*",
-		"/countTest": "semantic/count/*",
+		"/connection": "semantic/connection/*",
 		"/arms": "semantic/arms/*",
 
 		"/me/hands/left": "semantic/arms/left/hand/palm",
 		"/me/hands/right": "semantic/arms/right/hand/palm",
-		"/controller/left/trigger": "semantic/count/hands"
+		"/controller/left/trigger": "semantic/connection/device"
 	}
 }
