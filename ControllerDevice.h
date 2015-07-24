@@ -3,6 +3,7 @@
 #include "Analog.h"
 #include "Imaging.h"
 #include "Tracker.h"
+#include "Configure.h"
 
 namespace LeapOsvr {
 	
@@ -20,6 +21,7 @@ namespace LeapOsvr {
 			Analog* mAnalog;
 			Imaging* mImaging;
 			Tracker* mTracker;
+			Configure* mConfigure;
 			osvr::pluginkit::DeviceToken mDeviceToken;
 
 			void initDevice(OSVR_PluginRegContext pContext);

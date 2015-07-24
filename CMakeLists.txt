@@ -32,6 +32,8 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
     SOURCES
 	Analog.cpp
 	Analog.h
+	Config.cpp
+	Config.h
     com_osvr_LeapMotion.cpp
 	ControllerDevice.cpp
 	ControllerDevice.h
@@ -45,3 +47,10 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 target_link_libraries(com_osvr_LeapMotion
 	${LEAP_SDK_PATH}/lib/x86/Leap.lib
 	${OpenCV_DIR}/opencv_core2410.lib)
+
+add_custom_command(
+	TARGET com_osvr_LeapMotion
+	POST_BUILD
+	COMMAND cp $(TargetPath) ${CMAKE_PREFIX_PATH}/bin/osvr-plugins-0/com_osvr_LeapMotion.dll
+	COMMENT "Copying plugin build to OSVR Server..."
+)
