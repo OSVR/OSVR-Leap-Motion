@@ -17,7 +17,6 @@ namespace LeapOsvr {
 		private:
 
 			const Leap::Controller& mController;
-			const Leap::Config mConfig;
 			const osvr::pluginkit::DeviceToken& mDeviceToken;
 			//OSVR_ConfigDeviceInterface mConfigInterface;
 

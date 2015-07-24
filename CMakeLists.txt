@@ -32,11 +32,13 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
     SOURCES
 	Analog.cpp
 	Analog.h
-	Config.cpp
-	Config.h
+	Configure.cpp
+	Configure.h
     com_osvr_LeapMotion.cpp
 	ControllerDevice.cpp
 	ControllerDevice.h
+	Gesture.cpp
+	Gesture.h
 	Imaging.cpp
 	Imaging.h
 	Tracker.cpp
