@@ -7,8 +7,8 @@ using namespace LeapOsvr;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 Gestures::Gestures(const osvr::pluginkit::DeviceToken& pDeviceToken,
-					OSVR_DeviceInitOptions pOptions, const Controller& pController) : 
-					mDeviceToken(pDeviceToken), mController(pController)/*,mGestureInterface(NULL)*/ {
+					OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData) : 
+					mDeviceToken(pDeviceToken), mLeapData(pLeapData)/*,mGestureInterface(NULL)*/ {
 	//osvrDeviceGestureConfig(pOptions, &mGestureInterface, 4);
 }
 
@@ -16,7 +16,7 @@ Gestures::Gestures(const osvr::pluginkit::DeviceToken& pDeviceToken,
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 void Gestures::update() {
-	Frame frame = mController.frame(0);
+	Frame frame = mLeapData.getFrame();
 	GestureList gestures = frame.gestures();
 	int gestureCount = gestures.count();
 

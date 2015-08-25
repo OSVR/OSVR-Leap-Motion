@@ -43,6 +43,8 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 	HandSelector.h
 	Imaging.cpp
 	Imaging.h
+	LeapData.cpp
+	LeapData.h
 	Tracker.cpp
 	Tracker.h
     "${CMAKE_CURRENT_BINARY_DIR}/com_osvr_LeapMotion_json.h")

@@ -8,8 +8,8 @@ using namespace osvr::pluginkit;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-ControllerDevice::ControllerDevice() : mAnalog(NULL), mImaging(NULL), mTracker(NULL), 
-																	mGestures(NULL), mConfigure(NULL) {
+ControllerDevice::ControllerDevice() : mLeapData(NULL), mAnalog(NULL), mImaging(NULL),
+													mTracker(NULL), mGestures(NULL), mConfigure(NULL) {
 	//do nothing...
 }
 
@@ -24,6 +24,7 @@ OSVR_ReturnCode ControllerDevice::operator()(OSVR_PluginRegContext pContext) {
 
 /*----------------------------------------------------------------------------------------------------*/
 OSVR_ReturnCode ControllerDevice::update() {
+	mLeapData->update();
 	mAnalog->update();
 	mImaging->update();
 	mTracker->update();
@@ -35,17 +36,19 @@ OSVR_ReturnCode ControllerDevice::update() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 void ControllerDevice::initDevice(OSVR_PluginRegContext pContext) {
+	mLeapData = new LeapData(mController);
+
 	mController.setPolicy(Controller::POLICY_BACKGROUND_FRAMES);
 	//mController.setPolicy(Controller::POLICY_IMAGES);
 	//mController.setPolicy(Controller::POLICY_OPTIMIZE_HMD);
 
 	OSVR_DeviceInitOptions options = osvrDeviceCreateInitOptions(pContext);
 
-	mAnalog = new Analog(mDeviceToken, options, mController);
-	mImaging = new Imaging(mDeviceToken, options, mController);
-	mTracker = new Tracker(mDeviceToken, options, mController);
-	mGestures = new Gestures(mDeviceToken, options, mController);
-	mConfigure = new Configure(mDeviceToken, options, mController);
+	mAnalog = new Analog(mDeviceToken, options, *mLeapData);
+	mImaging = new Imaging(mDeviceToken, options, *mLeapData);
+	mTracker = new Tracker(mDeviceToken, options, *mLeapData);
+	mGestures = new Gestures(mDeviceToken, options, *mLeapData);
+	mConfigure = new Configure(mDeviceToken, options, *mLeapData);
 
 	mConfigure->setBool(ConfigureKey::Policy_Images, true); //TEST
 	mConfigure->setBool(ConfigureKey::Policy_OptimizeHmd, true); //TEST

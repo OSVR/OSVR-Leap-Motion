@@ -1,5 +1,5 @@
 #include <osvr/PluginKit/PluginKit.h>
-#include "Leap.h"
+#include "LeapData.h"
 #include "Analog.h"
 #include "Imaging.h"
 #include "Tracker.h"
@@ -18,7 +18,8 @@ namespace LeapOsvr {
 
 		private:
 
-			Leap::Controller mController;
+			const Leap::Controller mController;
+			LeapData* mLeapData;
 			Analog* mAnalog;
 			Imaging* mImaging;
 			Tracker* mTracker;

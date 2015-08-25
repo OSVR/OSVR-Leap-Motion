@@ -1,6 +1,6 @@
 #include <osvr/PluginKit/PluginKit.h>
 #include <osvr/PluginKit/AnalogInterfaceC.h>
-#include "Leap.h"
+#include "LeapData.h"
 
 namespace LeapOsvr {
 
@@ -9,7 +9,7 @@ namespace LeapOsvr {
 		public:
 
 			Analog(const osvr::pluginkit::DeviceToken& pDeviceToken, 
-				OSVR_DeviceInitOptions pOptions, const Leap::Controller& pController);
+				OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData);
 			void update();
 
 		private:
@@ -31,10 +31,11 @@ namespace LeapOsvr {
 				AnalogChannelCount //must be the last element
 			};
 
-			const Leap::Controller& mController;
+			const LeapData& mLeapData;
 			const osvr::pluginkit::DeviceToken& mDeviceToken;
 			OSVR_AnalogDeviceInterface mAnalogInterface;
 			OSVR_AnalogState* mValues;
+			//double mTest;
 
 	};
 

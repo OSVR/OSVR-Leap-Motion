@@ -8,8 +8,8 @@ using namespace ConfigureKey;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 Configure::Configure(const osvr::pluginkit::DeviceToken& pDeviceToken, 
-					OSVR_DeviceInitOptions pOptions, const Controller& pController) : 
-					mDeviceToken(pDeviceToken), mController(pController)/*,mConfigInterface(NULL)*/ {
+					OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData) : 
+					mDeviceToken(pDeviceToken), mLeapData(pLeapData)/*,mConfigInterface(NULL)*/ {
 	//osvrDeviceConfigConfig(pOptions, &mConfigInterface);
 }
 
@@ -24,22 +24,24 @@ inline bool isMatch(const std::string& pKeyA, const std::string& pKeyB) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 void Configure::setBool(const std::string& pKey, bool pValue) {
+	const Controller& controller = mLeapData.getController();
+
 	if ( isMatch(pKey, Policy_Images) ) {
 		if ( pValue ) {
-			mController.setPolicy(Controller::POLICY_IMAGES);
+			controller.setPolicy(Controller::POLICY_IMAGES);
 		}
 		else {
-			mController.clearPolicy(Controller::POLICY_IMAGES);
+			controller.clearPolicy(Controller::POLICY_IMAGES);
 		}
 		return;
 	}
 
 	if ( isMatch(pKey, Policy_OptimizeHmd) ) {
 		if ( pValue ) {
-			mController.setPolicy(Controller::POLICY_OPTIMIZE_HMD);
+			controller.setPolicy(Controller::POLICY_OPTIMIZE_HMD);
 		}
 		else {
-			mController.clearPolicy(Controller::POLICY_OPTIMIZE_HMD);
+			controller.clearPolicy(Controller::POLICY_OPTIMIZE_HMD);
 		}
 		return;
 	}
@@ -47,22 +49,22 @@ void Configure::setBool(const std::string& pKey, bool pValue) {
 	////
 
 	if ( isMatch(pKey, Gesture_Swipe) ) {
-		mController.enableGesture(Gesture::TYPE_SWIPE, pValue);
+		controller.enableGesture(Gesture::TYPE_SWIPE, pValue);
 		return;
 	}
 
 	if ( isMatch(pKey, Gesture_Circle) ) {
-		mController.enableGesture(Gesture::TYPE_CIRCLE, pValue);
+		controller.enableGesture(Gesture::TYPE_CIRCLE, pValue);
 		return;
 	}
 
 	if ( isMatch(pKey, Gesture_KeyTap) ) {
-		mController.enableGesture(Gesture::TYPE_KEY_TAP, pValue);
+		controller.enableGesture(Gesture::TYPE_KEY_TAP, pValue);
 		return;
 	}
 
 	if ( isMatch(pKey, Gesture_ScreenTap) ) {
-		mController.enableGesture(Gesture::TYPE_SCREEN_TAP, pValue);
+		controller.enableGesture(Gesture::TYPE_SCREEN_TAP, pValue);
 		return;
 	}
 
@@ -87,7 +89,7 @@ void Configure::setFloat(const std::string& pKey, float pValue) {
 	);
 
 	if ( isLeapConfig ) {
-		Config config = mController.config();
+		Config config = mLeapData.getController().config();
 		config.setFloat(pKey, pValue);
 		config.save();
 		return;

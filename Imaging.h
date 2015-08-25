@@ -1,6 +1,6 @@
 #include <osvr/PluginKit/PluginKit.h>
 #include <osvr/PluginKit/ImagingInterface.h>
-#include "Leap.h"
+#include "LeapData.h"
 
 namespace LeapOsvr {
 
@@ -9,13 +9,13 @@ namespace LeapOsvr {
 		public:
 
 			Imaging(osvr::pluginkit::DeviceToken& pDeviceToken,
-				OSVR_DeviceInitOptions pOptions, const Leap::Controller& pController);
+				OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData);
 			~Imaging();
 			void update();
 
 		private:
 
-			const Leap::Controller& mController;
+			const LeapData& mLeapData;
 			osvr::pluginkit::DeviceToken& mDeviceToken;
 			OSVR_ImagingDeviceInterfaceObject* mImagingDeviceInterface;
 			osvr::pluginkit::ImagingInterface mImagingInterface;

@@ -1,5 +1,4 @@
 #include "Analog.h"
-//#include <iostream>
 
 using namespace Leap;
 using namespace LeapOsvr;
@@ -8,40 +7,25 @@ using namespace LeapOsvr;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 Analog::Analog(const osvr::pluginkit::DeviceToken& pDeviceToken, 
-							OSVR_DeviceInitOptions pOptions, const Controller& pController) : 
-							mDeviceToken(pDeviceToken), mController(pController), 
+							OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData) : 
+							mDeviceToken(pDeviceToken), mLeapData(pLeapData),
 							mAnalogInterface(NULL), mValues(new OSVR_AnalogState[AnalogChannelCount]) {
 	osvrDeviceAnalogConfigure(pOptions, &mAnalogInterface, AnalogChannelCount);
+	//mTest = 0;
 }
 
 /*----------------------------------------------------------------------------------------------------*/
 void Analog::update() {
-	Frame frame = mController.frame(0);
-	HandList hands = frame.hands();
-	int handCount = hands.count();
-	Hand* handL = NULL;
-	Hand* handR = NULL;
+	const Controller& controller = mLeapData.getController();
 
-	for ( int i = 0 ; i < handCount ; ++i ) {
-		Hand hand = hands[i];
+	bool hasL = mLeapData.hasBestHand(LeapData::HandSide::Left);
+	bool hasR = mLeapData.hasBestHand(LeapData::HandSide::Right);
 
-		if ( !hand.isValid() ) {
-			continue;
-		}
+	const Hand* handL = (hasL ? &mLeapData.getBestHand(LeapData::HandSide::Left) : NULL);
+	const Hand* handR = (hasR ? &mLeapData.getBestHand(LeapData::HandSide::Right) : NULL);
 
-		if ( hand.isLeft() ) {
-			handL = &hand;
-		}
-		else {
-			handR = &hand;
-		}
-	}
-
-	bool hasL = (handL != NULL);
-	bool hasR = (handR != NULL);
-
-	mValues[IsDeviceConnected] = (mController.isConnected() ? 1 : 0);
-	mValues[IsServiceConnected] = (mController.isServiceConnected() ? 1 : 0);
+	mValues[IsDeviceConnected] = (controller.isConnected() ? 1 : 0);
+	mValues[IsServiceConnected] = (controller.isServiceConnected() ? 1 : 0);
 
 	mValues[IsLeftHandAvailable] = hasL;
 	mValues[IsRightHandAvailable] = hasR;
@@ -73,5 +57,12 @@ void Analog::update() {
 		" , " << mValues[RightHandPalmWidth] <<
 		std::endl;*/
 
-	osvrDeviceAnalogSetValues(mDeviceToken, mAnalogInterface, mValues, 0);
+	osvrDeviceAnalogSetValues(mDeviceToken, mAnalogInterface, mValues, AnalogChannelCount);
+
+	/*for ( int i = 0 ; i < AnalogChannelCount ; i++ ) {
+		osvrDeviceAnalogSetValue(mDeviceToken, mAnalogInterface, mValues[i]+mTest, i);
+	}
+
+	std::cout <<  "test " << mValues[0] << " / " << mTest << std::endl;
+	mTest += 0.01;*/
 }

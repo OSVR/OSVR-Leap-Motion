@@ -1,6 +1,6 @@
 #include <osvr/PluginKit/PluginKit.h>
 //#include <osvr/PluginKit/ConfigInterfaceC.h>
-#include "Leap.h"
+#include "LeapData.h"
 
 namespace LeapOsvr {
 
@@ -9,14 +9,14 @@ namespace LeapOsvr {
 		public:
 
 			Configure(const osvr::pluginkit::DeviceToken& pDeviceToken, 
-				OSVR_DeviceInitOptions pOptions, const Leap::Controller& pController);
+				OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData);
 
 			void setBool(const std::string& pKey, bool pValue);
 			void setFloat(const std::string& pKey, float pValue);
 
 		private:
 
-			const Leap::Controller& mController;
+			const LeapData& mLeapData;
 			const osvr::pluginkit::DeviceToken& mDeviceToken;
 			//OSVR_ConfigDeviceInterface mConfigInterface;
 

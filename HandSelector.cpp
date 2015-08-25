@@ -10,40 +10,48 @@ using namespace LeapOsvr;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-HandSelector::HandSelector(const Controller& pController, bool pIsLeft) : 
-															mController(pController), mIsLeft(pIsLeft) {
+HandSelector::HandSelector(bool pIsLeft) : mIsLeft(pIsLeft), 
+										mWinningHandId(NoHandFound), mWinningHandIndex(NoHandFound) {
+	//do nothing...
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-const int HandSelector::getBestHandIndex(const HandList& pHands) {
+void HandSelector::update(const HandList& pHands) {
 	int candidateIndex = getCandidateIndex(pHands);
 
 	if ( candidateIndex == NoHandFound ) {
-		return setNoWinner();
+		setNoWinner();
+		return;
 	}
 
 	Hand candidate = pHands[candidateIndex];
 
 	if ( !canCandidateBecomeWinner(candidate) ) {
 		//std::cout << "HandSelector(" << mIsLeft << "): Blocked winner " << candidate.id() <<std::endl;
-		return setNoWinner();
+		setNoWinner();
+		return;
 	}
 
 	/*if ( mWinningHandId != NoHandFound && mWinningHandId != candidate.id() ) {
-		std::cout << "HandSelector(" << mIsLeft << "): Switched winner ID " << 
-			mWinningHandId << " => " << candidate.id() << std::endl;
+		std::cout << "HandSelector(" << mIsLeft << "): Switched winner ID " <<
+		mWinningHandId << " => " << candidate.id() << std::endl;
 	}*/
 
 	mWinningHandId = candidate.id();
-	return candidateIndex;
+	mWinningHandIndex = candidateIndex;
+}
+
+/*----------------------------------------------------------------------------------------------------*/
+const int HandSelector::getBestHandIndex() const {
+	return mWinningHandIndex;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-const int HandSelector::getCandidateIndex(const HandList& pHands) {
+const int HandSelector::getCandidateIndex(const HandList& pHands) const {
 	int handCount = pHands.count();
 	int candidateIndex = NoHandFound;
 
@@ -86,17 +94,17 @@ const int HandSelector::getCandidateIndex(const HandList& pHands) {
 
 /*----------------------------------------------------------------------------------------------------*/
 const bool HandSelector::isNewCandidateBetterThanPrevious(
-									const Leap::Hand& pNewCandidate, const Leap::Hand& pPrevCandidate) {
+							const Leap::Hand& pNewCandidate, const Leap::Hand& pPrevCandidate)  const {
 	return (pNewCandidate.confidence() > pPrevCandidate.confidence());
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-const bool HandSelector::canCandidateBecomeWinner(const Leap::Hand& pCandidate) {
+const bool HandSelector::canCandidateBecomeWinner(const Leap::Hand& pCandidate)  const {
 	return (pCandidate.confidence() >= MinimumWinningConfidence/100.0f);
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-const int HandSelector::setNoWinner() {
+void HandSelector::setNoWinner() {
 	mWinningHandId = NoHandFound;
-	return NoHandFound;
+	mWinningHandIndex = NoHandFound;
 }

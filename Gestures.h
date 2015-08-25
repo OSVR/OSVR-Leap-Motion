@@ -1,6 +1,6 @@
 #include <osvr/PluginKit/PluginKit.h>
 //#include <osvr/PluginKit/GestureInterfaceC.h>
-#include "Leap.h"
+#include "LeapData.h"
 
 namespace LeapOsvr {
 
@@ -9,12 +9,12 @@ namespace LeapOsvr {
 		public:
 
 			Gestures(const osvr::pluginkit::DeviceToken& pDeviceToken,
-				OSVR_DeviceInitOptions pOptions, const Leap::Controller& pController);
+				OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData);
 			void update();
 
 		private:
 
-			const Leap::Controller& mController;
+			const LeapData& mLeapData;
 			const osvr::pluginkit::DeviceToken& mDeviceToken;
 			//OSVR_GestureDeviceInterface mGestureInterface;
 

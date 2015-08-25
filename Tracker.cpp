@@ -8,12 +8,9 @@ using namespace LeapOsvr;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 Tracker::Tracker(const osvr::pluginkit::DeviceToken& pDeviceToken,
-									OSVR_DeviceInitOptions pOptions, const Controller& pController) : 
-													mDeviceToken(pDeviceToken), 
-													mController(pController), 
-													mTrackerInterface(NULL), 
-													mHandSelectL(HandSelector(pController, true)),
-													mHandSelectR(HandSelector(pController, false)) {
+										OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData) : 
+												mDeviceToken(pDeviceToken), mLeapData(pLeapData),
+												mTrackerInterface(NULL) {
 	osvrDeviceTrackerConfigure(pOptions, &mTrackerInterface);
 
 	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_METACARPAL] = ThumbMeta;
@@ -44,18 +41,12 @@ Tracker::Tracker(const osvr::pluginkit::DeviceToken& pDeviceToken,
 
 /*----------------------------------------------------------------------------------------------------*/
 void Tracker::update() {
-	Frame frame = mController.frame(0);
-	HandList hands = frame.hands();
-	int bestHandIndexL = mHandSelectL.getBestHandIndex(hands);
-	int bestHandIndexR = mHandSelectR.getBestHandIndex(hands);
-	//std::cout << "HAND INDEXES: " << bestHandIndexL << " / " << bestHandIndexR << std::endl;
-
-	if ( bestHandIndexL != HandSelector::NoHandFound ) {
-		sendHand(hands[bestHandIndexL]);
+	if ( mLeapData.hasBestHand(LeapData::HandSide::Left) ) {
+		sendHand(mLeapData.getBestHand(LeapData::HandSide::Left));
 	}
 
-	if ( bestHandIndexR != HandSelector::NoHandFound ) {
-		sendHand(hands[bestHandIndexR]);
+	if ( mLeapData.hasBestHand(LeapData::HandSide::Right) ) {
+		sendHand(mLeapData.getBestHand(LeapData::HandSide::Right));
 	}
 }
 

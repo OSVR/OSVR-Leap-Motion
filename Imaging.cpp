@@ -1,5 +1,4 @@
 #include "Imaging.h"
-#include <iostream>
 
 using namespace Leap;
 using namespace LeapOsvr;
@@ -8,8 +7,8 @@ using namespace LeapOsvr;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 Imaging::Imaging(osvr::pluginkit::DeviceToken& pDeviceToken, 
-				OSVR_DeviceInitOptions pOptions, const Controller& pController) : 
-				mDeviceToken(pDeviceToken), mController(pController), mImagingDeviceInterface(NULL) {
+				OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData) : 
+				mDeviceToken(pDeviceToken), mLeapData(pLeapData), mImagingDeviceInterface(NULL) {
 	osvrDeviceImagingConfigure(pOptions, &mImagingDeviceInterface, 4);
 	mImagingInterface = osvr::pluginkit::ImagingInterface(pOptions);
 	mDistortionCache[0] = NULL;
@@ -25,7 +24,7 @@ Imaging::~Imaging() {
 
 /*----------------------------------------------------------------------------------------------------*/
 void Imaging::update() {
-	ImageList images = mController.images();
+	ImageList images = mLeapData.getController().images();
 	int imageCount = images.count();
 
 	OSVR_TimeValue time;
