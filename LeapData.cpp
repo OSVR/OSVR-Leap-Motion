@@ -23,8 +23,8 @@ void LeapData::update() {
 	mHandSelectL.update(hands);
 	mHandSelectR.update(hands);
 
-	std::cout << "HAND INDEXES: " << getBestHandIndex(Left) << " / " << 
-		getBestHandIndex(Right) << std::endl;
+	//std::cout << "HAND INDEXES: " << getBestHandIndex(Left) << " / " << 
+	//	getBestHandIndex(Right) << std::endl;
 }
 
 

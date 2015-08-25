@@ -99,3 +99,12 @@ void Configure::setFloat(const std::string& pKey, float pValue) {
 
 	std::cout << "[LEAP] Unsupported float config key: " << pKey << std::endl;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*----------------------------------------------------------------------------------------------------*/
+void Configure::setIntDirect(const std::string& pKey, int pValue) {
+	Config config = mLeapData.getController().config();
+	config.setInt32(pKey, pValue);
+	config.save();
+}

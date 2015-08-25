@@ -13,6 +13,7 @@ namespace LeapOsvr {
 
 			void setBool(const std::string& pKey, bool pValue);
 			void setFloat(const std::string& pKey, float pValue);
+			void setIntDirect(const std::string& pKey, int pValue);
 
 		private:
 

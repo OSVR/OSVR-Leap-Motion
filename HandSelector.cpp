@@ -5,7 +5,7 @@ using namespace LeapOsvr;
 
 //TODO: Improve this selection process, probably by looking at the hands over time. For example, if a 
 // candidate hand maintains a higher confidence than the current winner, across several frames of data, 
-// then that candidate should could become the new winner.
+// then that candidate could become the new winner.
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

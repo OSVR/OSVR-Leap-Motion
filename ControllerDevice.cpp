@@ -50,12 +50,22 @@ void ControllerDevice::initDevice(OSVR_PluginRegContext pContext) {
 	mGestures = new Gestures(mDeviceToken, options, *mLeapData);
 	mConfigure = new Configure(mDeviceToken, options, *mLeapData);
 
-	mConfigure->setBool(ConfigureKey::Policy_Images, true); //TEST
-	mConfigure->setBool(ConfigureKey::Policy_OptimizeHmd, true); //TEST
-	mConfigure->setBool(ConfigureKey::Gesture_Swipe, true); //TEST
-	mConfigure->setBool(ConfigureKey::Gesture_Circle, true); //TEST
-	mConfigure->setBool(ConfigureKey::Gesture_KeyTap, true); //TEST
-	mConfigure->setBool(ConfigureKey::Gesture_ScreenTap, true); //TEST
+	mConfigure->setBool(ConfigureKey::Policy_Images, true);
+	mConfigure->setBool(ConfigureKey::Policy_OptimizeHmd, true);
+	mConfigure->setBool(ConfigureKey::Gesture_Swipe, true);
+	mConfigure->setBool(ConfigureKey::Gesture_Circle, true);
+	mConfigure->setBool(ConfigureKey::Gesture_KeyTap, true);
+	mConfigure->setBool(ConfigureKey::Gesture_ScreenTap, true);
+
+	mConfigure->setIntDirect("head_mounted_display_mode", 1);
+	mConfigure->setIntDirect("tracking_hand_enabled", 1);
+	mConfigure->setIntDirect("tracking_tool_enabled", 1);
+	mConfigure->setIntDirect("images_mode", 2);
+	mConfigure->setIntDirect("robust_mode_enabled", 0);
+	mConfigure->setIntDirect("image_processing_auto_flip", 1);
+	mConfigure->setIntDirect("low_resource_mode_enabled", 0);
+	mConfigure->setIntDirect("avoid_poor_performance", 0);
+	mConfigure->setIntDirect("klaatu_barada_nikto", 1);
 
 	registerObjectForDeletion(pContext, mAnalog);
 	registerObjectForDeletion(pContext, mImaging);
