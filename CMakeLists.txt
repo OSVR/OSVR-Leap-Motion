@@ -37,8 +37,10 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
     com_osvr_LeapMotion.cpp
 	ControllerDevice.cpp
 	ControllerDevice.h
-	Gesture.cpp
-	Gesture.h
+	Gestures.cpp
+	Gestures.h
+	HandSelector.cpp
+	HandSelector.h
 	Imaging.cpp
 	Imaging.h
 	Tracker.cpp

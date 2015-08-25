@@ -2,6 +2,7 @@
 #include <osvr/PluginKit/TrackerInterfaceC.h>
 #include <osvr/Util/Pose3C.h>
 #include "Leap.h"
+#include "HandSelector.h"
 
 namespace LeapOsvr {
 
@@ -53,6 +54,8 @@ namespace LeapOsvr {
 			const osvr::pluginkit::DeviceToken& mDeviceToken;
 			OSVR_TrackerDeviceInterface mTrackerInterface;
 			Channel mChannelMap[5][4];
+			HandSelector mHandSelectL;
+			HandSelector mHandSelectR;
 
 			void sendHand(const Leap::Hand& pHand);
 			void sendFinger(const Leap::Finger& pFinger, bool pIsLeft);
