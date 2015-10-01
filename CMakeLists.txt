@@ -14,7 +14,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # C:/Users/Ryan/Downloads/OSVR-Core-Snapshot-v0.1-406-gaa55515-build54-vs12-32bit
 # in the CMake GUI or command line.
 find_package(osvr REQUIRED)
-find_package(Leap REQUIRED)
+find_package(LeapMotion REQUIRED)
 find_package(OpenCV REQUIRED core)
 find_package(Eigen3 REQUIRED)
 
@@ -29,7 +29,6 @@ osvr_convert_json(com_osvr_LeapMotion_json
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 include_directories(com_osvr_LeapMotion
-	${LEAP_INCLUDE_DIR}
 	${OPENCV_INCLUDE_DIR}
 	${EIGEN3_INCLUDE_DIR})
 
@@ -61,5 +60,5 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 
 # If you use other libraries, find them and add a line like:
 target_link_libraries(com_osvr_LeapMotion
-	Leap::Leap
+	LeapMotion::Leap
 	${OpenCV_LIBS})
