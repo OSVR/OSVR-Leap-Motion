@@ -1,12 +1,22 @@
+#
+# Leap Motion plugin for OSVR
+#
 cmake_minimum_required(VERSION 2.8.12)
 project(LeapMotionPlugin) # Change this line.
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # This looks for an osvrConfig.cmake file - most of the time it can be
 # autodetected but you might need to create/extend CMAKE_PREFIX_PATH to include something like
 # C:/Users/Ryan/Desktop/build/OSVR-Core-vc12 or
 # C:/Users/Ryan/Downloads/OSVR-Core-Snapshot-v0.1-406-gaa55515-build54-vs12-32bit
 # in the CMake GUI or command line.
-find_package(osvr)
+find_package(osvr REQUIRED)
+find_package(Leap REQUIRED)
+find_package(OpenCV REQUIRED core)
+find_package(Eigen3 REQUIRED)
 
 # This generates a header file, from the named json file, containing a string literal
 # named com_osvr_LeapMotion_json (not null terminated)
@@ -19,7 +29,7 @@ osvr_convert_json(com_osvr_LeapMotion_json
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 include_directories(com_osvr_LeapMotion
-	${LEAP_SDK_PATH}/include
+    ${LEAP_INCLUDE_DIR}
 	${OPENCV_INCLUDE_DIR}
 	${EIGEN3_INCLUDE_DIR})
 
@@ -51,12 +61,24 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 
 # If you use other libraries, find them and add a line like:
 target_link_libraries(com_osvr_LeapMotion
-	${LEAP_SDK_PATH}/lib/x86/Leap.lib
-	${OpenCV_DIR}/opencv_core2410.lib)
+	Leap::Leap
+	${OpenCV_LIBS})
 
-add_custom_command(
-	TARGET com_osvr_LeapMotion
-	POST_BUILD
-	COMMAND cp $(TargetPath) ${CMAKE_PREFIX_PATH}/bin/osvr-plugins-0/com_osvr_LeapMotion.dll
-	COMMENT "Copying plugin build to OSVR Server..."
-)
+# osvr_DIR points to OSVR binaries folder (built from source or downloaded binaries)
+# if you have OSVR built from source, it would have issues executing command below
+# just change the path accordingly
+if(WIN32)
+    add_custom_command(
+        TARGET com_osvr_LeapMotion
+        POST_BUILD
+        COMMAND copy /Y \"$(TargetPath)\" \"${osvr_DIR}/bin/osvr-plugins-0/com_osvr_LeapMotion.dll\"
+        COMMENT "Copying plugin build to OSVR Server..."
+    )
+else()
+    add_custom_command(
+        TARGET com_osvr_LeapMotion
+        POST_BUILD
+        COMMAND cp $(TargetPath) ${osvr_DIR}/bin/osvr-plugins-0/com_osvr_LeapMotion.dll
+        COMMENT "Copying plugin build to OSVR Server..."
+    )
+endif()
