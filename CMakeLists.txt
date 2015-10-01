@@ -63,22 +63,3 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 target_link_libraries(com_osvr_LeapMotion
 	Leap::Leap
 	${OpenCV_LIBS})
-
-# osvr_DIR points to OSVR binaries folder (built from source or downloaded binaries)
-# if you have OSVR built from source, it would have issues executing command below
-# just change the path accordingly
-if(WIN32)
-    add_custom_command(
-        TARGET com_osvr_LeapMotion
-        POST_BUILD
-        COMMAND copy /Y \"$(TargetPath)\" \"${osvr_DIR}/bin/osvr-plugins-0/com_osvr_LeapMotion.dll\"
-        COMMENT "Copying plugin build to OSVR Server..."
-    )
-else()
-    add_custom_command(
-        TARGET com_osvr_LeapMotion
-        POST_BUILD
-        COMMAND cp $(TargetPath) ${osvr_DIR}/bin/osvr-plugins-0/com_osvr_LeapMotion.dll
-        COMMENT "Copying plugin build to OSVR Server..."
-    )
-endif()
