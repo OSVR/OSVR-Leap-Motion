@@ -22,14 +22,14 @@ find_package(Eigen3 REQUIRED)
 # named com_osvr_LeapMotion_json (not null terminated)
 # The file must be added as a source file to some target (as below) to be generated.
 osvr_convert_json(com_osvr_LeapMotion_json
-    com_osvr_LeapMotion.json
-    "${CMAKE_CURRENT_BINARY_DIR}/com_osvr_LeapMotion_json.h")
+	com_osvr_LeapMotion.json
+	"${CMAKE_CURRENT_BINARY_DIR}/com_osvr_LeapMotion_json.h")
 
 # Be able to find our generated header file.
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
 include_directories(com_osvr_LeapMotion
-    ${LEAP_INCLUDE_DIR}
+	${LEAP_INCLUDE_DIR}
 	${OPENCV_INCLUDE_DIR}
 	${EIGEN3_INCLUDE_DIR})
 
@@ -38,13 +38,13 @@ include_directories(com_osvr_LeapMotion
 # for an OSVR plugin. It also installs the plugin into the right directory.
 # Pass as many source files as you need. See osvrAddPlugin.cmake for full docs.
 osvr_add_plugin(NAME com_osvr_LeapMotion
-    CPP # indicates we'd like to use the C++ wrapper
-    SOURCES
+	CPP # indicates we'd like to use the C++ wrapper
+	SOURCES
 	Analog.cpp
 	Analog.h
 	Configure.cpp
 	Configure.h
-    com_osvr_LeapMotion.cpp
+	com_osvr_LeapMotion.cpp
 	ControllerDevice.cpp
 	ControllerDevice.h
 	Gestures.cpp
@@ -57,7 +57,7 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 	LeapData.h
 	Tracker.cpp
 	Tracker.h
-    "${CMAKE_CURRENT_BINARY_DIR}/com_osvr_LeapMotion_json.h")
+	"${CMAKE_CURRENT_BINARY_DIR}/com_osvr_LeapMotion_json.h")
 
 # If you use other libraries, find them and add a line like:
 target_link_libraries(com_osvr_LeapMotion
