@@ -2,7 +2,7 @@
 # Leap Motion plugin for OSVR
 #
 cmake_minimum_required(VERSION 2.8.12)
-project(LeapMotionPlugin) # Change this line.
+project(LeapMotionPlugin)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
