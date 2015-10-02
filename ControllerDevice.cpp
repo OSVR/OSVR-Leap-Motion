@@ -8,42 +8,15 @@ using namespace osvr::pluginkit;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-ControllerDevice::ControllerDevice() : mLeapData(NULL), mAnalog(NULL), mImaging(NULL),
-													mTracker(NULL), mGestures(NULL), mConfigure(NULL) {
-	//do nothing...
-}
-
-/*----------------------------------------------------------------------------------------------------*/
-OSVR_ReturnCode ControllerDevice::operator()(OSVR_PluginRegContext pContext) {
-	if ( mAnalog == NULL ) {
-		initDevice(pContext);
-	}
-
-	return OSVR_RETURN_SUCCESS;
-}
-
-/*----------------------------------------------------------------------------------------------------*/
-OSVR_ReturnCode ControllerDevice::update() {
-	mLeapData->update();
-	mAnalog->update();
-	mImaging->update();
-	mTracker->update();
-	mGestures->update();
-	return OSVR_RETURN_SUCCESS;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*----------------------------------------------------------------------------------------------------*/
-void ControllerDevice::initDevice(OSVR_PluginRegContext pContext) {
-	mLeapData = new LeapData(mController);
-
+ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext) : mLeapData(NULL), mAnalog(NULL),
+									mImaging(NULL), mTracker(NULL), mGestures(NULL), mConfigure(NULL) {
 	mController.setPolicy(Controller::POLICY_BACKGROUND_FRAMES);
 	//mController.setPolicy(Controller::POLICY_IMAGES);
 	//mController.setPolicy(Controller::POLICY_OPTIMIZE_HMD);
 
 	OSVR_DeviceInitOptions options = osvrDeviceCreateInitOptions(pContext);
 
+	mLeapData = new LeapData(mController);
 	mAnalog = new Analog(mDeviceToken, options, *mLeapData);
 	mImaging = new Imaging(mDeviceToken, options, *mLeapData);
 	mTracker = new Tracker(mDeviceToken, options, *mLeapData);
@@ -67,13 +40,27 @@ void ControllerDevice::initDevice(OSVR_PluginRegContext pContext) {
 	mConfigure->setIntDirect("avoid_poor_performance", 0);
 	mConfigure->setIntDirect("klaatu_barada_nikto", 1);
 
-	registerObjectForDeletion(pContext, mAnalog);
-	registerObjectForDeletion(pContext, mImaging);
-	registerObjectForDeletion(pContext, mTracker);
-	registerObjectForDeletion(pContext, mGestures);
-	registerObjectForDeletion(pContext, mConfigure);
-
 	mDeviceToken.initAsync(pContext, "Controller", options);
 	mDeviceToken.sendJsonDescriptor(com_osvr_LeapMotion_json);
 	mDeviceToken.registerUpdateCallback(this);
+}
+
+/*----------------------------------------------------------------------------------------------------*/
+ControllerDevice::~ControllerDevice() {
+	delete mLeapData;
+	delete mAnalog;
+	delete mImaging;
+	delete mTracker;
+	delete mGestures;
+	delete mConfigure;
+}
+
+/*----------------------------------------------------------------------------------------------------*/
+OSVR_ReturnCode ControllerDevice::update() {
+	mLeapData->update();
+	mAnalog->update();
+	mImaging->update();
+	mTracker->update();
+	mGestures->update();
+	return OSVR_RETURN_SUCCESS;
 }

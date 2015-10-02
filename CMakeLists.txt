@@ -50,6 +50,8 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 	Gestures.h
 	HandSelector.cpp
 	HandSelector.h
+	HardwareDetection.cpp
+	HardwareDetection.h
 	Imaging.cpp
 	Imaging.h
 	LeapData.cpp

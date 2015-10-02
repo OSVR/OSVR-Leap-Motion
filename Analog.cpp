@@ -8,8 +8,7 @@ using namespace LeapOsvr;
 /*----------------------------------------------------------------------------------------------------*/
 Analog::Analog(const osvr::pluginkit::DeviceToken& pDeviceToken, 
 							OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData) : 
-							mDeviceToken(pDeviceToken), mLeapData(pLeapData),
-							mAnalogInterface(NULL), mValues(new OSVR_AnalogState[AnalogChannelCount]) {
+							mDeviceToken(pDeviceToken), mLeapData(pLeapData), mAnalogInterface(NULL) {
 	osvrDeviceAnalogConfigure(pOptions, &mAnalogInterface, AnalogChannelCount);
 	//mTest = 0;
 }

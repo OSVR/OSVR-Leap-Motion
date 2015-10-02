@@ -12,7 +12,8 @@ namespace LeapOsvr {
 
 		public:
 
-			ControllerDevice();
+			ControllerDevice(OSVR_PluginRegContext pContext);
+			~ControllerDevice();
 			OSVR_ReturnCode operator()(OSVR_PluginRegContext pContext);
 			OSVR_ReturnCode update();
 
