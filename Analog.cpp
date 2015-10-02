@@ -10,7 +10,6 @@ Analog::Analog(const osvr::pluginkit::DeviceToken& pDeviceToken,
 							OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData) : 
 							mDeviceToken(pDeviceToken), mLeapData(pLeapData), mAnalogInterface(NULL) {
 	osvrDeviceAnalogConfigure(pOptions, &mAnalogInterface, AnalogChannelCount);
-	//mTest = 0;
 }
 
 /*----------------------------------------------------------------------------------------------------*/
@@ -59,9 +58,6 @@ void Analog::update() {
 	osvrDeviceAnalogSetValues(mDeviceToken, mAnalogInterface, mValues, AnalogChannelCount);
 
 	/*for ( int i = 0 ; i < AnalogChannelCount ; i++ ) {
-		osvrDeviceAnalogSetValue(mDeviceToken, mAnalogInterface, mValues[i]+mTest, i);
-	}
-
-	std::cout <<  "test " << mValues[0] << " / " << mTest << std::endl;
-	mTest += 0.01;*/
+		osvrDeviceAnalogSetValue(mDeviceToken, mAnalogInterface, mValues[i], i);
+	}*/
 }

@@ -28,7 +28,7 @@ void Imaging::update() {
 	ImageList images = mLeapData.getController().images();
 	int imageCount = images.count();
 
-	long currSecond = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+	int64 currSecond = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
 	bool sendDistortion = (currSecond >= mNextDistortionSecond);
 	
 	if ( sendDistortion ) {

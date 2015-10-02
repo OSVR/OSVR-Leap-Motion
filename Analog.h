@@ -35,7 +35,6 @@ namespace LeapOsvr {
 			const osvr::pluginkit::DeviceToken& mDeviceToken;
 			OSVR_AnalogDeviceInterface mAnalogInterface;
 			OSVR_AnalogState mValues[AnalogChannelCount];
-			//double mTest;
 
 	};
 
