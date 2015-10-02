@@ -1,7 +1,9 @@
 #include "Imaging.h"
+#include <chrono>
 
 using namespace Leap;
 using namespace LeapOsvr;
+using namespace std::chrono;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,13 +28,11 @@ void Imaging::update() {
 	ImageList images = mLeapData.getController().images();
 	int imageCount = images.count();
 
-	OSVR_TimeValue time;
-	osvrTimeValueGetNow(&time);
-
-	bool sendDistortion = (time.seconds >= mNextDistortionSecond);
+	long currSecond = duration_cast<seconds>(system_clock::now().time_since_epoch()).count();
+	bool sendDistortion = (currSecond >= mNextDistortionSecond);
 	
 	if ( sendDistortion ) {
-		mNextDistortionSecond = time.seconds+2; //send every X seconds
+		mNextDistortionSecond = currSecond+2; //send every X seconds
 	}
 
 	if ( imageCount > 2 ) {
