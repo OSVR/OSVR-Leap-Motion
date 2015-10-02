@@ -15,9 +15,10 @@ namespace LeapOsvr {
 
 		private:
 
+			const int ImagingChannelCount = 4;
+
 			const LeapData& mLeapData;
 			osvr::pluginkit::DeviceToken& mDeviceToken;
-			OSVR_ImagingDeviceInterfaceObject* mImagingDeviceInterface;
 			osvr::pluginkit::ImagingInterface mImagingInterface;
 			cv::Mat* mDistortionCache[2];
 			OSVR_TimeValue_Seconds mNextDistortionSecond;

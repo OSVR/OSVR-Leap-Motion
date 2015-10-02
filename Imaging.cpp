@@ -8,9 +8,8 @@ using namespace LeapOsvr;
 /*----------------------------------------------------------------------------------------------------*/
 Imaging::Imaging(osvr::pluginkit::DeviceToken& pDeviceToken, 
 				OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData) : 
-				mDeviceToken(pDeviceToken), mLeapData(pLeapData), mImagingDeviceInterface(NULL) {
-	osvrDeviceImagingConfigure(pOptions, &mImagingDeviceInterface, 4);
-	mImagingInterface = osvr::pluginkit::ImagingInterface(pOptions);
+				mDeviceToken(pDeviceToken), mLeapData(pLeapData), 
+				mImagingInterface(osvr::pluginkit::ImagingInterface(pOptions, ImagingChannelCount)) {
 	mDistortionCache[0] = NULL;
 	mDistortionCache[1] = NULL;
 	mNextDistortionSecond = 0;
