@@ -19,8 +19,8 @@ void Analog::update() {
 	bool hasL = mLeapData.hasBestHand(LeapData::HandSide::Left);
 	bool hasR = mLeapData.hasBestHand(LeapData::HandSide::Right);
 
-	const Hand* handL = (hasL ? &mLeapData.getBestHand(LeapData::HandSide::Left) : NULL);
-	const Hand* handR = (hasR ? &mLeapData.getBestHand(LeapData::HandSide::Right) : NULL);
+	const Hand handL = (hasL ? mLeapData.getBestHand(LeapData::HandSide::Left) : mNullHand);
+	const Hand handR = (hasR ? mLeapData.getBestHand(LeapData::HandSide::Right) : mNullHand);
 
 	mValues[IsDeviceConnected] = (controller.isConnected() ? 1 : 0);
 	mValues[IsServiceConnected] = (controller.isServiceConnected() ? 1 : 0);
@@ -28,23 +28,25 @@ void Analog::update() {
 	mValues[IsLeftHandAvailable] = hasL;
 	mValues[IsRightHandAvailable] = hasR;
 
-	mValues[LeftHandConfidence] = (hasL ? handL->confidence() : 0);
-	mValues[RightHandConfidence] = (hasR ? handR->confidence() : 0);
+	mValues[LeftHandConfidence] = handL.confidence();
+	mValues[RightHandConfidence] = handR.confidence();
 
-	mValues[LeftHandGrabStrength] = (hasL ? handL->grabStrength() : 0);
-	mValues[RightHandGrabStrength] = (hasR ? handR->grabStrength() : 0);
+	mValues[LeftHandGrabStrength] = handL.grabStrength();
+	mValues[RightHandGrabStrength] = handR.grabStrength();
 
-	mValues[LeftHandPinchStrength] = (hasL ? handL->pinchStrength() : 0);
-	mValues[RightHandPinchStrength] = (hasR ? handR->pinchStrength() : 0);
+	mValues[LeftHandPinchStrength] = handL.pinchStrength();
+	mValues[RightHandPinchStrength] = handR.pinchStrength();
 
-	mValues[LeftHandPalmWidth] = (hasL ? handL->palmWidth() : 0);
-	mValues[RightHandPalmWidth] = (hasR ? handR->palmWidth() : 0);
+	mValues[LeftHandPalmWidth] = handL.palmWidth();
+	mValues[RightHandPalmWidth] = handR.palmWidth();
 
 	/*std::cout << "ANALOG" <<
 		" / " << mValues[IsDeviceConnected] <<
 		" , " << mValues[IsServiceConnected] <<
 		" / " << mValues[IsLeftHandAvailable] <<
 		" , " << mValues[IsRightHandAvailable] <<
+		" / " << handL.id() <<
+		" , " << handR.id() <<
 		" / " << mValues[LeftHandConfidence] <<
 		" , " << mValues[RightHandConfidence] <<
 		" / " << mValues[LeftHandGrabStrength] <<
