@@ -1,5 +1,5 @@
 #include "Tracker.h"
-#include <Eigen\Geometry>
+#include <Eigen/Geometry>
 
 using namespace Leap;
 using namespace LeapOsvr;
