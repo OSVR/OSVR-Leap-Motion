@@ -117,6 +117,7 @@ endif()
 find_library(LEAPMOTION_LEAP_LIBRARY_RELEASE
     NAMES
     Leap
+    libLeap
     HINTS
     "${_leapmotion_root}"
     PATHS
@@ -129,6 +130,7 @@ find_library(LEAPMOTION_LEAP_LIBRARY_RELEASE
 find_library(LEAPMOTION_LEAP_LIBRARY_DEBUG
     NAMES
     Leapd
+    libLeapd
     HINTS
     "${_leapmotion_root}"
     PATHS
