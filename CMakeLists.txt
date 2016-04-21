@@ -65,4 +65,8 @@ target_link_libraries(com_osvr_LeapMotion
 	LeapMotion::Leap
 	${OpenCV_LIBS})
 
+# Ensure that we're telling the compiler to at least use C++11, or it won't compile.
+target_compile_features(com_osvr_LeapMotion PRIVATE
+    cxx_range_for)
+
 # TODO: Should we also be installing the leap library, and if so, where?
