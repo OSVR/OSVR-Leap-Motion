@@ -1,4 +1,6 @@
 #include <osvr/PluginKit/PluginKit.h>
+#include <chrono>
+#include <thread>
 
 namespace LeapOsvr {
 	
