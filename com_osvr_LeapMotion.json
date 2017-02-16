@@ -413,7 +413,7 @@
   "automaticAliases": {
     "/camera": "semantic/camera/*",
     "/connection": "semantic/connection/*",
-    "/arms": "semantic/arms/*",
+    "/me/arms": "semantic/arms/*",
     "/me/hands/left": "semantic/skeleton/joints/x_l_palm",
     "/me/hands/right": "semantic/skeleton/joints/x_r_palm",
     "/me/hands/left/skeleton": "semantic/skeleton/dataAvailable/leftHand",
