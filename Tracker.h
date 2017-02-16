@@ -1,10 +1,12 @@
 #include <osvr/PluginKit/PluginKit.h>
 #include <osvr/PluginKit/TrackerInterfaceC.h>
+#include <osvr/PluginKit/SkeletonInterfaceC.h>
 #include <osvr/Util/Pose3C.h>
 #include "LeapData.h"
 
 namespace LeapOsvr {
 
+    /** @brief Handles tracker and skeleton interfaces */
 	class Tracker {
 
 		public:
@@ -52,6 +54,8 @@ namespace LeapOsvr {
 			const LeapData& mLeapData;
 			const osvr::pluginkit::DeviceToken& mDeviceToken;
 			OSVR_TrackerDeviceInterface mTrackerInterface;
+            OSVR_SkeletonDeviceInterface mSkeletonInterface;
+
 			Channel mChannelMap[5][4];
 
 			void sendHand(const Leap::Hand& pHand);

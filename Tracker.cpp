@@ -1,6 +1,8 @@
 #include "Tracker.h"
 #include <Eigen/Geometry>
 
+#include "com_osvr_LeapMotion_json.h"
+
 using namespace Leap;
 using namespace LeapOsvr;
 
@@ -11,11 +13,17 @@ Tracker::Tracker(const osvr::pluginkit::DeviceToken& pDeviceToken,
 										OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData) : 
 												mDeviceToken(pDeviceToken), mLeapData(pLeapData),
 												mTrackerInterface(NULL) {
+    // note we have two skeleton sensors, one for each hand, each with their own spec
+    // this is because the articulation specs for each hand are not connected by a parent joint
+    osvrDeviceSkeletonConfigure(pOptions, &mSkeletonInterface, com_osvr_LeapMotion_json, 2);
+
 	osvrDeviceTrackerConfigure(pOptions, &mTrackerInterface);
 
+    // The Leap SDK has a fake thumb intermediate joint so that each finger has the same number of
+    // joints, but it's not a real joint.
 	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_METACARPAL] = ThumbMeta;
 	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_PROXIMAL] = ThumbProx;
-	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_INTERMEDIATE] = ThumbInter;
+	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_INTERMEDIATE] = ThumbInter; // NOT USED
 	mChannelMap[Finger::Type::TYPE_THUMB][Bone::TYPE_DISTAL] = ThumbDist;
 
 	mChannelMap[Finger::Type::TYPE_INDEX][Bone::TYPE_METACARPAL] = IndexMeta;
@@ -41,12 +49,17 @@ Tracker::Tracker(const osvr::pluginkit::DeviceToken& pDeviceToken,
 
 /*----------------------------------------------------------------------------------------------------*/
 void Tracker::update() {
+    OSVR_TimeValue timestamp;
+    osvrTimeValueGetNow(&timestamp);
+
 	if ( mLeapData.hasBestHand(LeapData::HandSide::Left) ) {
 		sendHand(mLeapData.getBestHand(LeapData::HandSide::Left));
+        osvrDeviceSkeletonComplete(mSkeletonInterface, 0, &timestamp);
 	}
 
 	if ( mLeapData.hasBestHand(LeapData::HandSide::Right) ) {
 		sendHand(mLeapData.getBestHand(LeapData::HandSide::Right));
+        osvrDeviceSkeletonComplete(mSkeletonInterface, 1, &timestamp);
 	}
 }
 
