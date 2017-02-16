@@ -337,125 +337,56 @@
       "service": "analog/1"
     },
     "skeleton": {
-      "l_sternoclavicular": {
-        "l_acromioclavicular": {
-          "l_shoulder": {
-            "l_elbow": {
-              "$target": "tracker/0",
-              "l_wrist": {
-                "$target": "tracker/1",
-                "x_l_palm": "tracker/2",
-                "l_thumb1": {
-                  "$target": "tracker/3",
-                  "l_thumb2": {
-                    "$target": "tracker/4",
-                    "l_thumb3": "tracker/6"
-                  }
-                },
-                "l_index0": {
-                  "$target": "tracker/7",
-                  "l_index1": {
-                    "$target": "tracker/8",
-                    "l_index2": {
-                      "$target": "tracker/9",
-                      "l_index3": "tracker/10"
-                    }
-                  }
-                },
-                "l_middle0": {
-                  "$target": "tracker/11",
-                  "l_middle1": {
-                    "$target": "tracker/12",
-                    "l_middle2": {
-                      "$target": "tracker/13",
-                      "l_middle3": "tracker/14"
-                    }
-                  }
-                },
-                "l_ring0": {
-                  "$target": "tracker/15",
-                  "l_ring1": {
-                    "$target": "tracker/16",
-                    "l_ring2": {
-                      "$target": "tracker/17",
-                      "l_ring3": "tracker/18"
-                    }
-                  }
-                },
-                "l_pinky0": {
-                  "$target": "tracker/19",
-                  "l_pinky1": {
-                    "$target": "tracker/20",
-                    "l_pinky2": {
-                      "$target": "tracker/21",
-                      "l_pinky3": "tracker/22"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+      "dataAvailable": {
+        "left": "skeleton/0",
+        "right": "skeleton/1"
       },
-      "r_sternoclavicular": {
-        "r_acromioclavicular": {
-          "r_shoulder": {
-            "r_elbow": {
-              "$target": "tracker/23",
-              "r_wrist": {
-                "$target": "tracker/24",
-                "x_r_palm": "tracker/25",
-                "r_thumb1": {
-                  "$target": "tracker/26",
-                  "r_thumb2": {
-                    "$target": "tracker/27",
-                    "r_thumb3": "tracker/29"
-                  }
-                },
-                "r_index0": {
-                  "$target": "tracker/30",
-                  "r_index1": {
-                    "$target": "tracker/31",
-                    "r_index2": {
-                      "$target": "tracker/32",
-                      "r_index3": "tracker/33"
-                    }
-                  }
-                },
-                "r_middle0": {
-                  "$target": "tracker/34",
-                  "r_middle1": {
-                    "$target": "tracker/35",
-                    "r_middle2": {
-                      "$target": "tracker/36",
-                      "r_middle3": "tracker/37"
-                    }
-                  }
-                },
-                "r_ring0": {
-                  "$target": "tracker/38",
-                  "r_ring1": {
-                    "$target": "tracker/39",
-                    "r_ring2": {
-                      "$target": "tracker/40",
-                      "r_ring3": "tracker/41"
-                    }
-                  }
-                },
-                "r_pinky0": {
-                  "$target": "tracker/42",
-                  "r_pinky1": {
-                    "$target": "tracker/43",
-                    "r_pinky2": {
-                      "$target": "tracker/44",
-                      "r_pinky3": "tracker/45"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+      "joints": {
+        "l_elbow": "tracker/0",
+        "l_wrist": "tracker/1",
+        "x_l_palm": "tracker/2",
+        "l_thumb1": "tracker/3",
+        "l_thumb2": "tracker/4",
+        "l_thumb3": "tracker/6",
+        "l_index0": "tracker/7",
+        "l_index1": "tracker/8",
+        "l_index2": "tracker/9",
+        "l_index3": "tracker/10",
+        "l_middle0": "tracker/11",
+        "l_middle1": "tracker/12",
+        "l_middle2": "tracker/13",
+        "l_middle3": "tracker/14",
+        "l_ring0": "tracker/15",
+        "l_ring1": "tracker/16",
+        "l_ring2": "tracker/17",
+        "l_ring3": "tracker/18",
+        "l_pinky0": "tracker/19",
+        "l_pinky1": "tracker/20",
+        "l_pinky2": "tracker/21",
+        "l_pinky3": "tracker/22",
+
+        "r_elbow": "tracker/23",
+        "r_wrist": "tracker/24",
+        "x_r_palm": "tracker/25",
+        "r_thumb1": "tracker/26",
+        "r_thumb2": "tracker/27",
+        "r_thumb3": "tracker/29",
+        "r_index0": "tracker/30",
+        "r_index1": "tracker/31",
+        "r_index2": "tracker/32",
+        "r_index3": "tracker/33",
+        "r_middle0": "tracker/34",
+        "r_middle1": "tracker/35",
+        "r_middle2": "tracker/36",
+        "r_middle3": "tracker/37",
+        "r_ring0": "tracker/38",
+        "r_ring1": "tracker/39",
+        "r_ring2": "tracker/40",
+        "r_ring3": "tracker/41",
+        "r_pinky0": "tracker/42",
+        "r_pinky1": "tracker/43",
+        "r_pinky2": "tracker/44",
+        "r_pinky3": "tracker/45"
       }
     },
     "arms": {
@@ -477,18 +408,20 @@
           "palmWidth": "analog/11"
         }
       }
-    },
-    "automaticAliases": {
-      "/camera": "semantic/camera/*",
-      "/connection": "semantic/connection/*",
-      "/arms": "semantic/arms/*",
-
-      "/me/hands/left": "semantic/skeleton/l_sternoclavicular/l_acromioclavicular/l_shoulder/l_elbow/l_wrist/x_l_palm",
-      "/me/hands/right": "semantic/skeleton/r_sternoclavicular/r_acromioclavicular/r_shoulder/r_elbow/r_wrist/x_r_palm",
-      "/me/hands/left/skeleton": "semantic/skeleton/l_sternoclavicular/l_acromioclavicular/l_shoulder/*",
-      "/me/hands/right/skeleton": "semantic/skeleton/r_sternoclavicular/r_acromioclavicular/r_shoulder/*",
-      "/controller/left/trigger": "semantic/left/hand/pinchStrength",
-      "/controller/right/trigger": "semantic/right/hand/pinchStrength"
     }
+  },
+  "automaticAliases": {
+    "/camera": "semantic/camera/*",
+    "/connection": "semantic/connection/*",
+    "/arms": "semantic/arms/*",
+    "/me/hands/left": "semantic/skeleton/joints/x_l_palm",
+    "/me/hands/right": "semantic/skeleton/joints/x_r_palm",
+    "/me/hands/left/skeleton": "semantic/skeleton/dataAvailable/leftHand",
+    "/me/hands/right/skeleton": "semantic/skeleton/dataAvailable/rightHand",
+    "/me/skeleton": {
+      "joints": "semantic/skeleton/joints/*"
+    },
+    "/controller/left/trigger": "semantic/arms/left/hand/pinchStrength",
+    "/controller/right/trigger": "semantic/arms/right/hand/pinchStrength"
   }
 }
