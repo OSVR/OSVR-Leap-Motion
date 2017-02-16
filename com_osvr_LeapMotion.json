@@ -338,8 +338,8 @@
     },
     "skeleton": {
       "dataAvailable": {
-        "left": "skeleton/0",
-        "right": "skeleton/1"
+        "leftHand": "skeleton/0",
+        "rightHand": "skeleton/1"
       },
       "joints": {
         "l_elbow": "tracker/0",
