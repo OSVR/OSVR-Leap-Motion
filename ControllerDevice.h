@@ -22,7 +22,7 @@ namespace LeapOsvr {
 			const Leap::Controller mController;
 			LeapData* mLeapData;
 			Analog* mAnalog;
-			Imaging* mImaging;
+			//Imaging* mImaging;
 			Tracker* mTracker;
 			Gestures* mGestures;
 			Configure* mConfigure;

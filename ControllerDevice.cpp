@@ -9,7 +9,7 @@ using namespace osvr::pluginkit;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext) : mLeapData(NULL), mAnalog(NULL),
-									mImaging(NULL), mTracker(NULL), mGestures(NULL), mConfigure(NULL) {
+									/*mImaging(NULL), */mTracker(NULL), mGestures(NULL), mConfigure(NULL) {
 	mController.setPolicy(Controller::POLICY_BACKGROUND_FRAMES);
 	//mController.setPolicy(Controller::POLICY_IMAGES);
 	//mController.setPolicy(Controller::POLICY_OPTIMIZE_HMD);
@@ -18,7 +18,7 @@ ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext) : mLeapData(N
 
 	mLeapData = new LeapData(mController);
 	mAnalog = new Analog(mDeviceToken, options, *mLeapData);
-	mImaging = new Imaging(mDeviceToken, options, *mLeapData);
+	//mImaging = new Imaging(mDeviceToken, options, *mLeapData);
 	mTracker = new Tracker(mDeviceToken, options, *mLeapData);
 	mGestures = new Gestures(mDeviceToken, options, *mLeapData);
 	mConfigure = new Configure(mDeviceToken, options, *mLeapData);
@@ -49,7 +49,7 @@ ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext) : mLeapData(N
 ControllerDevice::~ControllerDevice() {
 	delete mLeapData;
 	delete mAnalog;
-	delete mImaging;
+	//delete mImaging;
 	delete mTracker;
 	delete mGestures;
 	delete mConfigure;
@@ -59,7 +59,7 @@ ControllerDevice::~ControllerDevice() {
 OSVR_ReturnCode ControllerDevice::update() {
 	mLeapData->update();
 	mAnalog->update();
-	mImaging->update();
+	//mImaging->update();
 	mTracker->update();
 	mGestures->update();
 	return OSVR_RETURN_SUCCESS;
