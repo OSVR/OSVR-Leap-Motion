@@ -29,15 +29,9 @@ void HandSelector::update(const HandList& pHands) {
 	Hand candidate = pHands[candidateIndex];
 
 	if ( !canCandidateBecomeWinner(candidate) ) {
-		//std::cout << "HandSelector(" << mIsLeft << "): Blocked winner " << candidate.id() <<std::endl;
 		setNoWinner();
 		return;
 	}
-
-	/*if ( mWinningHandId != NoHandFound && mWinningHandId != candidate.id() ) {
-		std::cout << "HandSelector(" << mIsLeft << "): Switched winner ID " <<
-		mWinningHandId << " => " << candidate.id() << std::endl;
-	}*/
 
 	mWinningHandId = candidate.id();
 	mWinningHandIndex = candidateIndex;
@@ -54,39 +48,27 @@ const int HandSelector::getBestHandIndex() const {
 const int HandSelector::getCandidateIndex(const HandList& pHands) const {
 	int handCount = pHands.count();
 	int candidateIndex = NoHandFound;
-
+    
 	for ( int i = 0 ; i < handCount ; ++i ) {
 		Hand hand = pHands[i];
 
-		//Ignore invalid/mismatched hands
+		// Ignore invalid/mismatched hands
+        // Note: I'm not assuming hand.isLeft() implies !hand.isRight() or the reverse, and assuming that
+        // !hand.isLeft() && !hand.isRight() is possible
+        if (hand.isValid() && ((hand.isLeft() && mIsLeft) || (hand.isRight() && !mIsLeft))) {
+            //Capture first candidate
+            if (candidateIndex == NoHandFound) {
+                candidateIndex = i;
+                continue;
+            }
 
-		if ( !hand.isValid() || hand.isLeft() != mIsLeft ) {
-			continue;
-		}
-
-		//Immediately return a previous winner
-
-		if ( hand.id() == mWinningHandId ) {
-			return i;
-		}
-
-		//Capture first candidate
-
-		if ( candidateIndex == NoHandFound ) {
-			candidateIndex = i;
-			continue;
-		}
-
-		//If there are multiple candidates, choose the best one
-
-		Hand prevCandidate = pHands[candidateIndex];
-
-		if ( isNewCandidateBetterThanPrevious(hand, prevCandidate) ) {
-			//std::cout << "HandSelector(" << mIsLeft << "): Switched candidate index " << 
-			//	candidateIndex << " => " << i << std::endl;
-			candidateIndex = i;
-			continue;
-		}
+            //If there are multiple candidates, choose the best one
+            Hand prevCandidate = pHands[candidateIndex];
+            if (isNewCandidateBetterThanPrevious(hand, prevCandidate)) {
+                candidateIndex = i;
+                continue;
+            }
+        }
 	}
 
 	return candidateIndex;
