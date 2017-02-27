@@ -71,37 +71,40 @@ void Tracker::sendHand(const Hand& pHand) {
 	Arm arm = pHand.arm();
 	FingerList fingers = pHand.fingers();
 	int fingerCount = fingers.count();
+    auto palmNormal = pHand.palmNormal();
+    auto handDirection = pHand.direction();
+    auto armDirection = arm.direction();
 
-	sendPose(Elbow, isLeft, arm.elbowPosition(), arm.basis());
-	sendPose(Wrist, isLeft, arm.wristPosition(), arm.basis());
-	sendPose(Palm, isLeft, pHand.palmPosition(), pHand.basis());
+    sendPose(Elbow, isLeft, arm.elbowPosition(), armDirection.pitch(), armDirection.yaw(), palmNormal.roll());
+    sendPose(Wrist, isLeft, arm.wristPosition(), handDirection.pitch(), handDirection.yaw(), palmNormal.roll());
+    sendPose(Palm, isLeft, pHand.palmPosition(), handDirection.pitch(), handDirection.yaw(), palmNormal.roll());
 
 	for ( int i = 0 ; i < fingerCount ; i++ ) {
-		sendFinger(fingers[i], isLeft);
+		sendFinger(fingers[i], palmNormal.roll(), isLeft);
 	}
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-void Tracker::sendFinger(const Finger& pFinger, bool pIsLeft) {
+void Tracker::sendFinger(const Finger& pFinger, double roll, bool pIsLeft) {
 	Finger::Type type = pFinger.type();
-
-	sendBone(pFinger.bone(Bone::TYPE_METACARPAL), type, pIsLeft);
-	sendBone(pFinger.bone(Bone::TYPE_PROXIMAL), type, pIsLeft);
-	sendBone(pFinger.bone(Bone::TYPE_INTERMEDIATE), type, pIsLeft);
-	sendBone(pFinger.bone(Bone::TYPE_DISTAL), type, pIsLeft);
+	sendBone(pFinger.bone(Bone::TYPE_METACARPAL), type, roll, pIsLeft);
+    sendBone(pFinger.bone(Bone::TYPE_PROXIMAL), type, roll, pIsLeft);
+    sendBone(pFinger.bone(Bone::TYPE_INTERMEDIATE), type, roll, pIsLeft);
+    sendBone(pFinger.bone(Bone::TYPE_DISTAL), type, roll, pIsLeft);
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-void Tracker::sendBone(const Bone& pBone, Finger::Type pFingerType, bool pIsLeft) {
+void Tracker::sendBone(const Bone& pBone, Finger::Type pFingerType, double roll, bool pIsLeft) {
 	Channel channel = mChannelMap[pFingerType][pBone.type()];
-	sendPose(channel, pIsLeft, pBone.center(), pBone.basis());
+    auto direction = pBone.direction();
+    sendPose(channel, pIsLeft, pBone.center(), direction.pitch(), direction.yaw(), roll);
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-void Tracker::sendPose(Channel pChannel, bool pIsLeft, const Vector& pPosition, const Matrix& pBasis) {
+void Tracker::sendPose(Channel pChannel, bool pIsLeft, const Vector& pPosition, double pitch, double yaw, double roll) {
 	OSVR_PoseState pose;
 	pose.translation = getOsvrVector(pPosition);
-	pose.rotation = getOsvrQuaternion(pBasis, pIsLeft);
+	pose.rotation = getOsvrQuaternion(pitch, yaw, roll);
 
 	OSVR_ChannelCount channel = pChannel+(pIsLeft ? 0 : ChannelsPerHand);
 
@@ -122,16 +125,12 @@ OSVR_Vec3 Tracker::getOsvrVector(const Vector& pVector) {
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-OSVR_Quaternion Tracker::getOsvrQuaternion(const Matrix& pBasis, bool pIsLeft) {
-	int zMult = (pIsLeft ? -1 : 1);
-
-	Eigen::Matrix3f mat = Eigen::Matrix3f();
-	mat << //uses column-major order
-		pBasis.xBasis.x, pBasis.yBasis.x, pBasis.zBasis.x*zMult,
-		pBasis.xBasis.y, pBasis.yBasis.y, pBasis.zBasis.y*zMult,
-		pBasis.xBasis.z, pBasis.yBasis.z, pBasis.zBasis.z*zMult;
-
-	Eigen::Quaternionf eigenQuat = Eigen::Quaternionf(mat);
+OSVR_Quaternion Tracker::getOsvrQuaternion(double pitch, double yaw, double roll) {
+    // one of many ways to do this
+    Eigen::Quaterniond eigenQuat =
+          Eigen::AngleAxisd(pitch, Eigen::Vector3d::UnitX())
+        * Eigen::AngleAxisd(yaw, Eigen::Vector3d::UnitY())
+        * Eigen::AngleAxisd(roll, Eigen::Vector3d::UnitZ());
 	eigenQuat.normalize();
 
 	OSVR_Quaternion quat;

@@ -59,13 +59,11 @@ namespace LeapOsvr {
 			Channel mChannelMap[5][4];
 
 			void sendHand(const Leap::Hand& pHand);
-			void sendFinger(const Leap::Finger& pFinger, bool pIsLeft);
-			void sendBone(const Leap::Bone& pBone, Leap::Finger::Type pFingerType, bool pIsLeft);
-			void sendPose(Channel pChannel, bool pIsLeft, 
-				const Leap::Vector& pPosition, const Leap::Matrix& pBasis);
-
+            void sendFinger(const Leap::Finger& pFinger, double roll, bool pIsLeft);
+            void sendBone(const Leap::Bone& pBone, Leap::Finger::Type pFingerType, double roll, bool pIsLeft);
+			void sendPose(Channel pChannel, bool pIsLeft, const Leap::Vector& pPosition, double pitch, double yaw, double roll);
 			OSVR_Vec3 getOsvrVector(const Leap::Vector& pVector);
-			OSVR_Quaternion getOsvrQuaternion(const Leap::Matrix& pBasis, bool pIsLeft);
+			OSVR_Quaternion getOsvrQuaternion(double pitch, double yaw, double roll);
 
 	};
 
