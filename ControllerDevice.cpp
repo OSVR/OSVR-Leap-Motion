@@ -24,20 +24,23 @@ ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext) : mLeapData(N
 	mConfigure = new Configure(mDeviceToken, options, *mLeapData);
 
 	mConfigure->setBool(ConfigureKey::Policy_Images, true);
-	mConfigure->setBool(ConfigureKey::Policy_OptimizeHmd, true);
+	mConfigure->setBool(ConfigureKey::Policy_OptimizeHmd, false); // @todo: make this a configurable setting
 	mConfigure->setBool(ConfigureKey::Gesture_Swipe, true);
 	mConfigure->setBool(ConfigureKey::Gesture_Circle, true);
 	mConfigure->setBool(ConfigureKey::Gesture_KeyTap, true);
 	mConfigure->setBool(ConfigureKey::Gesture_ScreenTap, true);
 
-	mConfigure->setIntDirect("head_mounted_display_mode", 1);
-	mConfigure->setIntDirect("tracking_hand_enabled", 1);
-	mConfigure->setIntDirect("tracking_tool_enabled", 1);
+    // just let the user set these in their control panel?
+	//mConfigure->setBoolDirect("image_processing_auto_flip", false);
+    //mConfigure->setBoolDirect("robust_mode_enabled", false);
+	//mConfigure->setBoolDirect("head_mounted_display_mode", false);
+	//mConfigure->setBoolDirect("avoid_poor_performance", false);
+	//mConfigure->setIntDirect("low_resource_mode_enabled", 0);
+
+	mConfigure->setBoolDirect("tracking_hand_enabled", true);
+	mConfigure->setBoolDirect("tracking_tool_enabled", true);
+
 	mConfigure->setIntDirect("images_mode", 2);
-	mConfigure->setIntDirect("robust_mode_enabled", 0);
-	mConfigure->setIntDirect("image_processing_auto_flip", 1);
-	mConfigure->setIntDirect("low_resource_mode_enabled", 0);
-	mConfigure->setIntDirect("avoid_poor_performance", 0);
 	mConfigure->setIntDirect("klaatu_barada_nikto", 1);
 
 	mDeviceToken.initAsync(pContext, "Controller", options);

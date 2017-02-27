@@ -100,6 +100,13 @@ void Configure::setFloat(const std::string& pKey, float pValue) {
 	std::cout << "[LEAP] Unsupported float config key: " << pKey << std::endl;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*----------------------------------------------------------------------------------------------------*/
+void Configure::setBoolDirect(const std::string& pKey, bool pValue) {
+    Config config = mLeapData.getController().config();
+    config.setBool(pKey, pValue);
+    config.save();
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
