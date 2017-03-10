@@ -1,9 +1,10 @@
 #include <osvr/PluginKit/PluginKit.h>
+#include "LeapC.h"
 #include "LeapData.h"
 #include "Analog.h"
-#include "Imaging.h"
+//#include "Imaging.h"
 #include "Tracker.h"
-#include "Gestures.h"
+//#include "Gestures.h"
 #include "Configure.h"
 
 namespace LeapOsvr {
@@ -12,19 +13,19 @@ namespace LeapOsvr {
 
 		public:
 
-			ControllerDevice(OSVR_PluginRegContext pContext);
+            ControllerDevice(OSVR_PluginRegContext pContext, LEAP_CONNECTION connection);
 			~ControllerDevice();
 			OSVR_ReturnCode operator()(OSVR_PluginRegContext pContext);
 			OSVR_ReturnCode update();
 
 		private:
 
-			const Leap::Controller mController;
+			const LEAP_CONNECTION mConnection;
 			LeapData* mLeapData;
 			Analog* mAnalog;
-			//Imaging* mImaging;
+			//Imaging* mImaging; // not currently working, also needs migration to C API
 			Tracker* mTracker;
-			Gestures* mGestures;
+			//Gestures* mGestures; // deprecated in 3.0.0 SDK
 			Configure* mConfigure;
 			osvr::pluginkit::DeviceToken mDeviceToken;
 

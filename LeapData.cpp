@@ -1,63 +1,120 @@
 #include "LeapData.h"
+#include <iostream>
 
-using namespace Leap;
 using namespace LeapOsvr;
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-LeapData::LeapData(const Controller& pController) : mController(pController),
-																	mHandSelectL(HandSelector(true)),
-																	mHandSelectR(HandSelector(false)) {
-	//do nothing...
+LeapData::LeapData(const LEAP_CONNECTION pConnection) : mConnection(pConnection),
+    mHandSelectL(HandSelector(true)),
+    mHandSelectR(HandSelector(false)) {
+    //do nothing...
 }
 
+LeapData::~LeapData() {
+    if (mConnection) {
+        LeapDestroyConnection(mConnection);
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 void LeapData::update() {
-	mFrame = mController.frame(0);
 
-	const HandList& hands = mFrame.hands();
+    eLeapRS result;
+    LEAP_CONNECTION_MESSAGE msg;
+    result = LeapPollConnection(mConnection, 1000, &msg);
+    if (LEAP_FAILED(result)) {
+        std::cerr << "com_osvr_LeapMotion - LeapData::update(): LeapPollConnection call failed." << std::endl;
+        return;
+    }
 
-	mHandSelectL.update(hands);
-	mHandSelectR.update(hands);
-
-	//std::cout << "HAND INDEXES: " << getBestHandIndex(Left) << " / " << 
-	//	getBestHandIndex(Right) << std::endl;
+    switch (msg.type) {
+    case eLeapEventType_Connection:
+        // @todo
+        break;
+    case eLeapEventType_ConnectionLost:
+        // @todo
+        break;
+    case eLeapEventType_Device:
+        // @todo
+        break;
+    case eLeapEventType_DeviceLost:
+        // @todo
+        break;
+    case eLeapEventType_DeviceFailure:
+        // @todo
+        break;
+    case eLeapEventType_Tracking:
+        copyFrame(*(msg.tracking_event));
+        break;
+    case eLeapEventType_ImageComplete:
+        // @todo
+        break;
+    case eLeapEventType_ImageRequestError:
+        // @todo
+        break;
+    case eLeapEventType_LogEvent:
+        // @todo
+        break;
+    case eLeapEventType_Policy:
+        // @todo
+        break;
+    case eLeapEventType_ConfigChange:
+        // @todo
+        break;
+    case eLeapEventType_ConfigResponse:
+        // @todo
+        break;
+    default:
+        // @todo log msg.type?
+        break;
+    }
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-const Controller& LeapData::getController() const {
-	return mController;
+const LEAP_CONNECTION LeapData::getConnection() const {
+    return mConnection;
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-const Frame& LeapData::getFrame() const {
-	return mFrame;
+const LEAP_TRACKING_EVENT& LeapData::getFrame() const {
+    return mFrame;
 }
 
 /*----------------------------------------------------------------------------------------------------*/
 const bool LeapData::hasBestHand(HandSide pSide) const {
-	return (getBestHandIndex(pSide) != NoHandFound);
+    return (getBestHandIndex(pSide) != NoHandFound);
 }
 
 /*----------------------------------------------------------------------------------------------------*/
-const Hand LeapData::getBestHand(HandSide pSide) const {
-	const int index = getBestHandIndex(pSide);
+const LEAP_HAND& LeapData::getBestHand(HandSide pSide) const {
+    const int index = getBestHandIndex(pSide);
 
-	if ( index == NoHandFound ) {
-		throw std::out_of_range("No 'best hand' was found.");
-	}
+    if (index == NoHandFound) {
+        throw std::out_of_range("No 'best hand' was found.");
+    }
 
-	return mFrame.hands()[index];
+    return mFrame.pHands[index];
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
 const int LeapData::getBestHandIndex(HandSide pSide) const {
-	return (pSide == Left ? mHandSelectL : mHandSelectR).getBestHandIndex();
+    return (pSide == Left ? mHandSelectL : mHandSelectR).getBestHandIndex();
+}
+
+void LeapData::copyFrame(const LEAP_TRACKING_EVENT& frame) {
+    mFrame = frame;
+    mHands.resize(frame.nHands);
+    for (uint32_t i = 0; i < frame.nHands; i++) {
+        mHands[i] = frame.pHands[i];
+    }
+    mFrame.pHands = mHands.data();
+    mHandSelectL.update(mHands);
+    mHandSelectR.update(mHands);
 }

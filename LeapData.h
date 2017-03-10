@@ -1,42 +1,55 @@
 #if !defined(__LeapData_h__)
 #define __LeapData_h__
 
-#include "Leap.h"
+#include <vector>
+#include "LeapC.h"
 #include "HandSelector.h"
 
 namespace LeapOsvr {
 
-	class LeapData {
+    class LeapData {
 
-		public:
+    public:
 
-			enum HandSide {
-				Left,
-				Right
-			};
+        enum HandSide {
+            Left,
+            Right
+        };
 
-			static const int NoHandFound = -1;
-			static const int MinimumWinningConfidence = 5;
+        static const int NoHandFound = -1;
+        static const int MinimumWinningConfidence = 5;
 
-			LeapData(const Leap::Controller& pController);
+        LeapData(const LEAP_CONNECTION pController);
+        ~LeapData();
 
-			void update();
+        void update();
 
-			const Leap::Controller& getController() const;
-			const Leap::Frame& getFrame() const;
-			const bool hasBestHand(HandSide pSide) const;
-			const Leap::Hand getBestHand(HandSide pSide) const;
+        const LEAP_CONNECTION getConnection() const;
+        const LEAP_TRACKING_EVENT& getFrame() const;
+        const bool hasBestHand(HandSide pSide) const;
+        const LEAP_HAND& getBestHand(HandSide pSide) const;
 
-		private:
+        const bool isConnected() const {
+            // @todo track this in the poll event loop
+            return true;
+        }
 
-			const Leap::Controller& mController;
-			Leap::Frame mFrame;
-			HandSelector mHandSelectL;
-			HandSelector mHandSelectR;
+        const bool isDeviceConnected() const {
+            // @todo track this in the poll event loop
+            return true;
+        }
 
-			const int getBestHandIndex(HandSide pSide) const;
+    private:
 
-	};
+        const LEAP_CONNECTION mConnection = nullptr;
+        LEAP_TRACKING_EVENT mFrame;
+        HandSelector mHandSelectL;
+        HandSelector mHandSelectR;
+        std::vector<LEAP_HAND> mHands;
+
+        const int getBestHandIndex(HandSide pSide) const;
+        void copyFrame(const LEAP_TRACKING_EVENT& frame);
+    };
 
 }
 

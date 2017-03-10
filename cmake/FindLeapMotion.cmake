@@ -101,7 +101,7 @@ endif()
 # and can provide a root directory for finding the rest of the SDK.
 find_path(LEAPMOTION_INCLUDE_DIR
     NAMES
-    Leap.h
+    LeapC.h
     PATHS
     "${LEAPMOTION_ROOT_DIR}"
     "${_progfiles}/Leap Motion/LeapSDK/include"
@@ -116,8 +116,8 @@ endif()
 
 find_library(LEAPMOTION_LEAP_LIBRARY_RELEASE
     NAMES
-    Leap
-    libLeap
+    LeapC
+    libLeapC
     HINTS
     "${_leapmotion_root}"
     PATHS
@@ -129,8 +129,8 @@ find_library(LEAPMOTION_LEAP_LIBRARY_RELEASE
 # Debug build came with some earlier SDKs but not 2.3.1
 find_library(LEAPMOTION_LEAP_LIBRARY_DEBUG
     NAMES
-    Leapd
-    libLeapd
+    LeapCd
+    libLeapCd
     HINTS
     "${_leapmotion_root}"
     PATHS
@@ -147,7 +147,7 @@ if(WIN32)
         get_filename_component(_leapmotion_libdir "${LEAPMOTION_LEAP_LIBRARY_RELEASE}" DIRECTORY)
         find_file(LEAPMOTION_LEAP_RUNTIME_LIBRARY_RELEASE
             NAMES
-            Leap.dll
+            LeapC.dll
             HINTS
             "${_leapmotion_libdir}")
     endif()
@@ -155,7 +155,7 @@ if(WIN32)
         get_filename_component(_leapmotion_libdir "${LEAPMOTION_LEAP_LIBRARY_DEBUG}" DIRECTORY)
         find_file(LEAPMOTION_LEAP_RUNTIME_LIBRARY_DEBUG
             NAMES
-            Leapd.dll
+            LeapCd.dll
             HINTS
             "${_leapmotion_libdir}")
     endif()
