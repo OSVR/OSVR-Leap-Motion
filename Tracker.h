@@ -23,10 +23,12 @@ namespace LeapOsvr {
 
             Palm,
 
-            ThumbMeta,
-            ThumbProx,
-            ThumbInter,
-            ThumbDist,
+            // Leap motion thumbs are reported anatomically incorrect
+            // we correct this in the device semantic paths
+            ThumbMeta, // null/zero joint
+            ThumbProx, // actually the metacarpal
+            ThumbInter, // actually the proximal
+            ThumbDist, // distal
 
             IndexMeta,
             IndexProx,

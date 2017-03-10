@@ -20,14 +20,14 @@ LeapData::~LeapData() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-void LeapData::update() {
+bool LeapData::update() {
 
     eLeapRS result;
     LEAP_CONNECTION_MESSAGE msg;
     result = LeapPollConnection(mConnection, 1000, &msg);
     if (LEAP_FAILED(result)) {
-        std::cerr << "com_osvr_LeapMotion - LeapData::update(): LeapPollConnection call failed." << std::endl;
-        return;
+        //std::cerr << "com_osvr_LeapMotion - LeapData::update(): LeapPollConnection call failed." << std::endl;
+        return false;
     }
 
     switch (msg.type) {
@@ -48,6 +48,7 @@ void LeapData::update() {
         break;
     case eLeapEventType_Tracking:
         copyFrame(*(msg.tracking_event));
+        return true;
         break;
     case eLeapEventType_ImageComplete:
         // @todo
@@ -71,6 +72,7 @@ void LeapData::update() {
         // @todo log msg.type?
         break;
     }
+    return false;
 }
 
 
@@ -101,6 +103,18 @@ const LEAP_HAND& LeapData::getBestHand(HandSide pSide) const {
     return mFrame.pHands[index];
 }
 
+
+const bool LeapData::isConnected() const {
+    LEAP_CONNECTION_INFO connectionInfo;
+    eLeapRS result = LeapGetConnectionInfo(mConnection, &connectionInfo);
+    return LEAP_SUCCEEDED(result) && connectionInfo.status == eLeapConnectionStatus_Connected;
+}
+
+const bool LeapData::isDeviceConnected() const {
+    uint32_t numDevices = 0;
+    eLeapRS result = LeapGetDeviceList(mConnection, nullptr, &numDevices);
+    return LEAP_SUCCEEDED(result) && numDevices > 0;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/

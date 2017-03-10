@@ -65,10 +65,11 @@ ControllerDevice::~ControllerDevice() {
 
 /*----------------------------------------------------------------------------------------------------*/
 OSVR_ReturnCode ControllerDevice::update() {
-    mLeapData->update();
-    mAnalog->update();
-    //mImaging->update();
-    mTracker->update();
-    //mGestures->update();
+    if (mLeapData->update()) {
+        mAnalog->update();
+        //mImaging->update();
+        mTracker->update();
+        //mGestures->update();
+    }
     return OSVR_RETURN_SUCCESS;
 }

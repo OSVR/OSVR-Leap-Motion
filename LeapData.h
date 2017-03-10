@@ -22,22 +22,14 @@ namespace LeapOsvr {
         LeapData(const LEAP_CONNECTION pController);
         ~LeapData();
 
-        void update();
+        bool update();
 
         const LEAP_CONNECTION getConnection() const;
         const LEAP_TRACKING_EVENT& getFrame() const;
         const bool hasBestHand(HandSide pSide) const;
         const LEAP_HAND& getBestHand(HandSide pSide) const;
-
-        const bool isConnected() const {
-            // @todo track this in the poll event loop
-            return true;
-        }
-
-        const bool isDeviceConnected() const {
-            // @todo track this in the poll event loop
-            return true;
-        }
+        const bool isConnected() const;
+        const bool isDeviceConnected() const;
 
     private:
 
@@ -46,7 +38,6 @@ namespace LeapOsvr {
         HandSelector mHandSelectL;
         HandSelector mHandSelectR;
         std::vector<LEAP_HAND> mHands;
-
         const int getBestHandIndex(HandSide pSide) const;
         void copyFrame(const LEAP_TRACKING_EVENT& frame);
     };
