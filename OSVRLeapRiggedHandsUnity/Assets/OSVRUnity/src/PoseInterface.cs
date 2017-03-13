@@ -58,27 +58,9 @@ namespace OSVR
                 if (this.adapter != null)
                 {
                     var state = this.adapter.GetState();
-                   // transform.localPosition = state.Value.Position;
-                   // transform.localRotation = state.Value.Rotation;// * Reorientation();
-                    OSVR.ClientKit.Vec3 v;
-                    v.x = state.Value.Position.x;
-
-                    v.y = state.Value.Position.y;
-
-                    v.z = state.Value.Position.z;
-                    transform.localPosition = Math.ConvertPosition(v);
-                    OSVR.ClientKit.Quaternion q;
-                    q.x = state.Value.Rotation.x;
-                    q.y = state.Value.Rotation.y;
-                    q.z = state.Value.Rotation.z;
-                    q.w = state.Value.Rotation.w;
-                    transform.localRotation = Math.ConvertOrientation(q);
+                    transform.localPosition = state.Value.Position;
+                    transform.localRotation = state.Value.Rotation;
                 }
-            }
-
-            public Quaternion Reorientation()
-            {
-                return Quaternion.Inverse(Quaternion.LookRotation(new Vector3(-1,0,0), -new Vector3(0, 1, 0)));
             }
 
             public OSVR.ClientKit.IInterface<OSVR.Unity.Pose3> Interface
