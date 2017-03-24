@@ -1,0 +1,133 @@
+fileFormatVersion: 2
+guid: 2df6f2d4f2f2d4b47893e152defd2915
+timeCreated: 1490290818
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: 0_thumb_0
+    100002: 0_thumb_0_end
+    100004: 0_thumb_1
+    100006: 0_thumb_2
+    100008: 1_index_0
+    100010: 1_index_0_end
+    100012: 1_index_1
+    100014: 1_index_2
+    100016: 2_middle_0
+    100018: 2_middle_0_end
+    100020: 2_middle_1
+    100022: 2_middle_2
+    100024: 3_ring_0
+    100026: 3_ring_1
+    100028: 3_ring_2
+    100030: 4_pinky_0
+    100032: 4_pinky_0_end
+    100034: 4_pinky_1
+    100036: 4_pinky_2
+    100038: Forearm
+    100040: Forearm_end
+    100042: //RootNode
+    100044: Hand_left_mesh
+    100046: Wrist
+    400000: 0_thumb_0
+    400002: 0_thumb_0_end
+    400004: 0_thumb_1
+    400006: 0_thumb_2
+    400008: 1_index_0
+    400010: 1_index_0_end
+    400012: 1_index_1
+    400014: 1_index_2
+    400016: 2_middle_0
+    400018: 2_middle_0_end
+    400020: 2_middle_1
+    400022: 2_middle_2
+    400024: 3_ring_0
+    400026: 3_ring_1
+    400028: 3_ring_2
+    400030: 4_pinky_0
+    400032: 4_pinky_0_end
+    400034: 4_pinky_1
+    400036: 4_pinky_2
+    400038: Forearm
+    400040: Forearm_end
+    400042: //RootNode
+    400044: Hand_left_mesh
+    400046: Wrist
+    2300000: Hand_left_mesh
+    3300000: Hand_left_mesh
+    4300000: Hand_left_mesh
+    7400000: Armature_fpshands|Hand_left_mesh|Take 001|BaseLayer
+    7400002: Armature_fpshands|hand_left|Take 001|BaseLayer
+    7400004: Armature_fpshands|hand_right|Take 001|BaseLayer
+    7400006: Hand_left_mesh|Hand_left_mesh|Take 001|BaseLayer
+    7400008: Hand_left_mesh|hand_left|Take 001|BaseLayer
+    7400010: Hand_left_mesh|hand_right|Take 001|BaseLayer
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 1
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.001
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
