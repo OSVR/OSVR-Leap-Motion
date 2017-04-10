@@ -1,4 +1,6 @@
-﻿Shader "Hidden/Runtime Gizmos" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Hidden/Runtime Gizmos" {
   Properties {
     _Color ("Color", Color) = (1,1,1,1)
   }
@@ -27,7 +29,7 @@
       
     v2f_shaded vert_shaded (appdata_shaded v) {
       v2f_shaded o;
-      o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+      o.vertex = UnityObjectToClipPos(v.vertex);
       float3 viewDir = normalize(ObjSpaceViewDir(v.vertex));
       o.fresnelValue = lerp(0.39, 0.66, saturate(dot(v.normal, viewDir)));
       return o;
@@ -35,7 +37,7 @@
 
     v2f_unlit vert_unlit (appdata_unlit v) {
       v2f_unlit o;
-      o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+      o.vertex = UnityObjectToClipPos(v.vertex);
       return o;
     }
 

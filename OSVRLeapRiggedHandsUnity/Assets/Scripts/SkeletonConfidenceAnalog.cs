@@ -32,8 +32,29 @@ public class SkeletonConfidenceAnalog : OSVR.Unity.RequiresAnalogInterface
 
     private double confidence;
     public double threshold = 0.1;
-    public GameObject trackedGameObject;
+    public GameObject[] trackedGameObjects;
+    private int m_currentIndex = 0;
     public bool disableGameObjectBelowConfidenceThreshold = true;
+
+    public int CurrentIndex
+    {
+        get { return m_currentIndex; }
+    }
+    public void SetCurrentIndex(int index)
+    {
+        if(index > trackedGameObjects.Length - 1)
+        {
+            m_currentIndex = 0;
+        }
+        else if(index < 0)
+        {
+            m_currentIndex = trackedGameObjects.Length - 1;
+        }
+        else
+        {
+            m_currentIndex = index;
+        }
+    }
 
     // Use this for initialization
     void Start()
@@ -47,16 +68,30 @@ public class SkeletonConfidenceAnalog : OSVR.Unity.RequiresAnalogInterface
         confidence = report;
         if(confidence < threshold)
         {
-            if(trackedGameObject.activeSelf)
+
+            if(trackedGameObjects[CurrentIndex].activeSelf)
             {
-                trackedGameObject.SetActive(false);
+                trackedGameObjects[CurrentIndex].SetActive(false);
             }
         }
         else
         {
-            if (!trackedGameObject.activeSelf)
+            for (int i = 0; i < trackedGameObjects.Length; i++)
             {
-                trackedGameObject.SetActive(true);
+                if (i == CurrentIndex)
+                {
+                    if (!trackedGameObjects[i].activeSelf)
+                    {
+                        trackedGameObjects[i].SetActive(true);
+                    }
+                }
+                else
+                {
+                    if (trackedGameObjects[i].activeSelf)
+                    {
+                        trackedGameObjects[i].SetActive(false);
+                    }
+                }
             }
         }
     }
