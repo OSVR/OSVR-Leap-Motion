@@ -2,6 +2,9 @@
 #include "ControllerDevice.h"
 #include <iostream>
 
+#include <json/reader.h>
+#include <json/value.h>
+
 using namespace LeapOsvr;
 
 
@@ -17,8 +20,11 @@ HardwareDetection::~HardwareDetection() {
     }
 }
 
-/*----------------------------------------------------------------------------------------------------*/
 OSVR_ReturnCode HardwareDetection::operator()(OSVR_PluginRegContext pContext) {
+    return (*this)(pContext, nullptr);
+}
+/*----------------------------------------------------------------------------------------------------*/
+OSVR_ReturnCode HardwareDetection::operator()(OSVR_PluginRegContext pContext, const char *params) {
     eLeapRS result;
     
     if(!mConnection) {
@@ -38,6 +44,19 @@ OSVR_ReturnCode HardwareDetection::operator()(OSVR_PluginRegContext pContext) {
     }
     
     if (!mFound) {
+        if (params) {
+            Json::Value root;
+            Json::Reader reader;
+            if (!reader.parse(params, root)) {
+                std::cerr << "Couldn't parse JSON for " << kLeapDriverName << std::endl;
+                return OSVR_RETURN_FAILURE;
+            }
+
+            if (root.isMember("hmdMode")) {
+                mConfig.hmdMode = root.get("hmdMode", mConfig.hmdMode).asBool();
+            }
+        }
+
         for (int i = 0; i < 5; i++) {
             LEAP_CONNECTION_MESSAGE msg;
             result = LeapPollConnection(mConnection, 1000, &msg);
@@ -61,7 +80,7 @@ OSVR_ReturnCode HardwareDetection::operator()(OSVR_PluginRegContext pContext) {
                 const LEAP_DEVICE_EVENT* deviceEvent = msg.device_event;
                 if (deviceEvent->status & eLeapDeviceStatus_Streaming) {
                     mFound = true;
-                    osvr::pluginkit::registerObjectForDeletion(pContext, new ControllerDevice(pContext, mConnection));
+                    osvr::pluginkit::registerObjectForDeletion(pContext, new ControllerDevice(pContext, mConnection, mConfig));
                     mConnection = nullptr; // pass ownership to the controller device
                 }
             }

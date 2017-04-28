@@ -17,6 +17,7 @@ find_package(osvr REQUIRED)
 find_package(LeapMotion REQUIRED)
 find_package(OpenCV REQUIRED core)
 find_package(Eigen3 REQUIRED)
+find_package(JsonCpp REQUIRED)
 
 # This generates a header file, from the named json file, containing a string literal
 # named com_osvr_LeapMotion_json (not null terminated)
@@ -63,6 +64,7 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 # If you use other libraries, find them and add a line like:
 target_link_libraries(com_osvr_LeapMotion
 	LeapMotion::Leap
+	JsonCpp::JsonCpp
 	${OpenCV_LIBS})
 
 # TODO: Should we also be installing the leap library, and if so, where?

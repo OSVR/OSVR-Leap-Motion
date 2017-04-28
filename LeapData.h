@@ -7,6 +7,11 @@
 
 namespace LeapOsvr {
 
+    class LeapConfig {
+    public:
+        bool hmdMode = true;
+    };
+
     class LeapData {
 
     public:

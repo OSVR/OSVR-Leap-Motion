@@ -13,13 +13,13 @@ namespace LeapOsvr {
 
 		public:
 
-            ControllerDevice(OSVR_PluginRegContext pContext, LEAP_CONNECTION connection);
+            ControllerDevice(OSVR_PluginRegContext pContext, LEAP_CONNECTION connection, LeapConfig config);
 			~ControllerDevice();
 			OSVR_ReturnCode operator()(OSVR_PluginRegContext pContext);
 			OSVR_ReturnCode update();
 
 		private:
-
+            LeapConfig mConfigOptions;
 			const LEAP_CONNECTION mConnection;
 			LeapData* mLeapData;
 			Analog* mAnalog;
