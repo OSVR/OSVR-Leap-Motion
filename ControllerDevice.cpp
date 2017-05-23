@@ -8,9 +8,9 @@ using namespace osvr::pluginkit;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*----------------------------------------------------------------------------------------------------*/
-ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext, LEAP_CONNECTION connection) :
+ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext, LEAP_CONNECTION connection, LeapConfig config) :
     mConnection(connection), mLeapData(NULL), mAnalog(NULL),
-    /*mImaging(NULL), */mTracker(NULL), /*mGestures(NULL),*/ mConfigure(NULL) {
+    /*mImaging(NULL), */mTracker(NULL), /*mGestures(NULL),*/ mConfigure(NULL), mConfigOptions(config) {
 
     //mController.setPolicy(Controller::POLICY_BACKGROUND_FRAMES);
     //mController.setPolicy(Controller::POLICY_IMAGES);
@@ -26,7 +26,7 @@ ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext, LEAP_CONNECTI
     mConfigure = new Configure(mDeviceToken, options, *mLeapData);
 
     mConfigure->setPolicy(eLeapPolicyFlag_BackgroundFrames, true);
-    mConfigure->setPolicy(eLeapPolicyFlag_OptimizeHMD, false);
+    mConfigure->setPolicy(eLeapPolicyFlag_OptimizeHMD, mConfigOptions.hmdMode);
 
     //mConfigure->setBool(ConfigureKey::Policy_Images, true);
     //mConfigure->setBool(ConfigureKey::Policy_OptimizeHmd, false); // @todo: make this a configurable setting
