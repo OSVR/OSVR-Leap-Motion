@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandsController : MonoBehaviour {
+public class SampleHandsController : MonoBehaviour {
 
     public SkeletonConfidenceAnalog leftHandConfidenceAnalog;
     public SkeletonConfidenceAnalog rightHandConfidenceAnalog;
