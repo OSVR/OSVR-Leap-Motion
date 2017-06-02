@@ -65,6 +65,7 @@ osvr_add_plugin(NAME com_osvr_LeapMotion
 target_link_libraries(com_osvr_LeapMotion
 	LeapMotion::Leap
 	JsonCpp::JsonCpp
+    osvr::osvrAnalysisPluginKit
 	${OpenCV_LIBS})
 
 # TODO: Should we also be installing the leap library, and if so, where?

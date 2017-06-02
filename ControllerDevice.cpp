@@ -1,6 +1,7 @@
 #include "ControllerDevice.h"
 #include "com_osvr_LeapMotion_json.h"
 #include "LeapC.h"
+#include "HardwareDetection.h"
 
 using namespace LeapOsvr;
 using namespace osvr::pluginkit;
@@ -12,6 +13,7 @@ ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext, LEAP_CONNECTI
     mConnection(connection), mLeapData(NULL), mAnalog(NULL),
     /*mImaging(NULL), */mTracker(NULL), /*mGestures(NULL),*/ mConfigure(NULL), mConfigOptions(config) {
 
+    OSVR_ReturnCode rc;
     //mController.setPolicy(Controller::POLICY_BACKGROUND_FRAMES);
     //mController.setPolicy(Controller::POLICY_IMAGES);
     //mController.setPolicy(Controller::POLICY_OPTIMIZE_HMD);
@@ -21,7 +23,7 @@ ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext, LEAP_CONNECTI
     mLeapData = new LeapData(mConnection);
     mAnalog = new Analog(mDeviceToken, options, *mLeapData);
     //mImaging = new Imaging(mDeviceToken, options, *mLeapData);
-    mTracker = new Tracker(mDeviceToken, options, *mLeapData);
+    mTracker = new Tracker(mDeviceToken, options, *mLeapData, mConfigOptions);
     //mGestures = new Gestures(mDeviceToken, options, *mLeapData);
     mConfigure = new Configure(mDeviceToken, options, *mLeapData);
 
@@ -48,7 +50,18 @@ ControllerDevice::ControllerDevice(OSVR_PluginRegContext pContext, LEAP_CONNECTI
     mConfigure->setIntDirect("images_mode", 2);
     mConfigure->setIntDirect("klaatu_barada_nikto", 1);
 
-    mDeviceToken.initAsync(pContext, "Controller", options);
+    if (config.hmdMode) {
+        OSVR_DeviceToken dev = nullptr;
+        rc = osvrAnalysisSyncInit(pContext, "Controller", options, &dev, &mContext);
+        if (rc == OSVR_RETURN_FAILURE) {
+            throw std::runtime_error("Could not initialize analysis plugin! This is required for hmd mode.");
+        }
+        mDeviceToken = osvr::pluginkit::DeviceToken(dev);
+        mTracker->setContext(mContext);
+    } else {
+        mDeviceToken.initAsync(pContext, "Controller", options);
+    }
+
     mDeviceToken.sendJsonDescriptor(com_osvr_LeapMotion_json);
     mDeviceToken.registerUpdateCallback(this);
 }

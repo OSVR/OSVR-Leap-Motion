@@ -1,4 +1,7 @@
 #include <osvr/PluginKit/PluginKit.h>
+#include <osvr/AnalysisPluginKit/AnalysisPluginKitC.h>
+#include <osvr/ClientKit/InterfaceCallbackC.h>
+#include <osvr/ClientKit/InterfaceStateC.h>
 #include "LeapC.h"
 #include "LeapData.h"
 #include "Analog.h"
@@ -21,6 +24,7 @@ namespace LeapOsvr {
 		private:
             LeapConfig mConfigOptions;
 			const LEAP_CONNECTION mConnection;
+            OSVR_ClientContext mContext;
 			LeapData* mLeapData;
 			Analog* mAnalog;
 			//Imaging* mImaging; // not currently working, also needs migration to C API

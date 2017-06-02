@@ -1,6 +1,7 @@
 #include <osvr/PluginKit/PluginKit.h>
 #include <osvr/PluginKit/TrackerInterfaceC.h>
 #include <osvr/PluginKit/SkeletonInterfaceC.h>
+#include <osvr/ClientKit/ContextC.h>
 #include <osvr/Util/Pose3C.h>
 #include "LeapData.h"
 
@@ -12,7 +13,10 @@ namespace LeapOsvr {
     public:
 
         Tracker(const osvr::pluginkit::DeviceToken& pDeviceToken,
-            OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData);
+            OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData,
+            LeapConfig config);
+
+        void setContext(OSVR_ClientContext context);
         void update();
 
     private:
@@ -76,8 +80,10 @@ namespace LeapOsvr {
         const osvr::pluginkit::DeviceToken& mDeviceToken;
         OSVR_TrackerDeviceInterface mTrackerInterface;
         OSVR_SkeletonDeviceInterface mSkeletonInterface;
-
+        OSVR_ClientContext mContext;
+        LeapConfig mConfig;
         Channel mChannelMap[5][4];
+        OSVR_ClientInterface mHeadInterface;
 
         void sendHand(const LEAP_HAND &pHand);
         void sendFinger(const LEAP_DIGIT &pFinger, FingerType pFingerType, bool pIsLeft);
