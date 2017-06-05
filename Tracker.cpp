@@ -15,7 +15,7 @@ Tracker::Tracker(const osvr::pluginkit::DeviceToken& pDeviceToken,
 
     // note we have two skeleton sensors, one for each hand, each with their own spec
     // this is because the articulation specs for each hand are not connected by a parent joint
-    osvrDeviceSkeletonConfigure(pOptions, &mSkeletonInterface, com_osvr_LeapMotion_json, 2);
+    osvrDeviceSkeletonConfigure(pOptions, &mSkeletonInterface, com_osvr_LeapMotion_json);
 
     osvrDeviceTrackerConfigure(pOptions, &mTrackerInterface);
 
