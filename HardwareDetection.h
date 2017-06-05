@@ -1,18 +1,23 @@
 #include <osvr/PluginKit/PluginKit.h>
+#include "LeapC.h"
+#include "LeapData.h"
 
 namespace LeapOsvr {
-	
-	class HardwareDetection {
+    static const char* kLeapDriverName = "LeapMotion";
 
-		public:
+    class HardwareDetection {
+    public:
 
-			HardwareDetection();
-			OSVR_ReturnCode operator()(OSVR_PluginRegContext pContext);
+        HardwareDetection();
+        ~HardwareDetection();
+        OSVR_ReturnCode operator()(OSVR_PluginRegContext pContext, const char *params);
+        OSVR_ReturnCode HardwareDetection::operator()(OSVR_PluginRegContext pContext);
 
-		private:
-
-			bool mFound;
-
-	};
+    private:
+        LeapOsvr::LeapConfig mConfig;
+        LEAP_CONNECTION mConnection = nullptr;
+        bool mFound = false;
+        bool mDeviceAdded = false;
+    };
 
 }

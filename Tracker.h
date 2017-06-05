@@ -1,68 +1,94 @@
 #include <osvr/PluginKit/PluginKit.h>
 #include <osvr/PluginKit/TrackerInterfaceC.h>
+#include <osvr/PluginKit/SkeletonInterfaceC.h>
 #include <osvr/Util/Pose3C.h>
 #include "LeapData.h"
 
 namespace LeapOsvr {
 
-	class Tracker {
+    /** @brief Handles tracker and skeleton interfaces */
+    class Tracker {
 
-		public:
+    public:
 
-			Tracker(const osvr::pluginkit::DeviceToken& pDeviceToken,
-				OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData);
-			void update();
+        Tracker(const osvr::pluginkit::DeviceToken& pDeviceToken,
+            OSVR_DeviceInitOptions pOptions, const LeapData& pLeapData);
+        void update();
 
-		private:
+    private:
 
-			enum Channel {
-				Elbow,
-				Wrist,
-				
-				Palm,
-				
-				ThumbMeta,
-				ThumbProx,
-				ThumbInter,
-				ThumbDist,
+        enum Channel {
+            Elbow,
+            Wrist,
 
-				IndexMeta,
-				IndexProx,
-				IndexInter,
-				IndexDist,
+            Palm,
 
-				MiddleMeta,
-				MiddleProx,
-				MiddleInter,
-				MiddleDist,
+            // Leap motion thumbs are reported anatomically incorrect
+            // we correct this in the device semantic paths
+            ThumbMeta, // null/zero joint
+            ThumbProx, // actually the metacarpal
+            ThumbInter, // actually the proximal
+            ThumbDist, // distal
 
-				RingMeta,
-				RingProx,
-				RingInter,
-				RingDist,
+            IndexMeta,
+            IndexProx,
+            IndexInter,
+            IndexDist,
 
-				PinkyMeta,
-				PinkyProx,
-				PinkyInter,
-				PinkyDist,
+            MiddleMeta,
+            MiddleProx,
+            MiddleInter,
+            MiddleDist,
 
-				ChannelsPerHand //must be the last element
-			};
+            RingMeta,
+            RingProx,
+            RingInter,
+            RingDist,
 
-			const LeapData& mLeapData;
-			const osvr::pluginkit::DeviceToken& mDeviceToken;
-			OSVR_TrackerDeviceInterface mTrackerInterface;
-			Channel mChannelMap[5][4];
+            PinkyMeta,
+            PinkyProx,
+            PinkyInter,
+            PinkyDist,
 
-			void sendHand(const Leap::Hand& pHand);
-			void sendFinger(const Leap::Finger& pFinger, bool pIsLeft);
-			void sendBone(const Leap::Bone& pBone, Leap::Finger::Type pFingerType, bool pIsLeft);
-			void sendPose(Channel pChannel, bool pIsLeft, 
-				const Leap::Vector& pPosition, const Leap::Matrix& pBasis);
+            ChannelsPerHand //must be the last element
+        };
 
-			OSVR_Vec3 getOsvrVector(const Leap::Vector& pVector);
-			OSVR_Quaternion getOsvrQuaternion(const Leap::Matrix& pBasis, bool pIsLeft);
+        enum FingerType {
+            Thumb,
+            Index,
+            Middle,
+            Ring,
+            Pinky,
 
-	};
+            NumFingerTypes // must be the last element
+        };
+
+        enum JointType {
+            MetaCarpal,
+            Proximal,
+            Intermediate,
+            Distal,
+            
+            NumJointTypes // must be last element
+        };
+
+        const LeapData& mLeapData;
+        const osvr::pluginkit::DeviceToken& mDeviceToken;
+        OSVR_TrackerDeviceInterface mTrackerInterface;
+        OSVR_SkeletonDeviceInterface mSkeletonInterface;
+
+        Channel mChannelMap[5][4];
+
+        void sendHand(const LEAP_HAND &pHand);
+        void sendFinger(const LEAP_DIGIT &pFinger, FingerType pFingerType, bool pIsLeft);
+        void sendBone(const LEAP_BONE &pBone, FingerType pFingerType, JointType pJointType, 
+            bool pIsLeft);
+        void sendPose(Channel pChannel, bool pIsLeft,
+            const LEAP_VECTOR &pPosition, const LEAP_QUATERNION &pRotation);
+
+        OSVR_Vec3 getOsvrVector(const LEAP_VECTOR &pVector);
+        OSVR_Quaternion getOsvrQuaternion(const LEAP_QUATERNION &pRotation, bool pIsLeft);
+
+    };
 
 }

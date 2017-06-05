@@ -1,4 +1,5 @@
-#include "Leap.h"
+#include <vector>
+#include "LeapC.h"
 
 namespace LeapOsvr {
 
@@ -11,7 +12,7 @@ namespace LeapOsvr {
 
 			HandSelector(bool pIsLeft);
 
-			void update(const Leap::HandList& pHands);
+			void update(const std::vector<LEAP_HAND> &pHands);
 			const int getBestHandIndex() const;
 
 		private:
@@ -20,10 +21,10 @@ namespace LeapOsvr {
 			int mWinningHandId;
 			int mWinningHandIndex;
 
-			const int getCandidateIndex(const Leap::HandList& pHands) const;
+            const int getCandidateIndex(const std::vector<LEAP_HAND> &pHands) const;
 			const bool isNewCandidateBetterThanPrevious(
-				const Leap::Hand& pNewCandidate, const Leap::Hand& pPrevCandidate) const;
-			const bool canCandidateBecomeWinner(const Leap::Hand& pCandidate) const;
+				const LEAP_HAND &pNewCandidate, const LEAP_HAND &pPrevCandidate) const;
+			const bool canCandidateBecomeWinner(const LEAP_HAND &pCandidate) const;
 			void setNoWinner();
 
 	};
