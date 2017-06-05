@@ -1,0 +1,39 @@
+<h1>OSVR Core System</h1>
+
+<blockquote><p>Maintained at <a href="https://github.com/OSVR/OSVR-Core">https://github.com/OSVR/OSVR-Core</a></p>
+
+<p>For details, see <a href="http://osvr.github.io">http://osvr.github.io</a></p>
+
+<p>For support, see <a href="http://support.osvr.com">http://support.osvr.com</a></p></blockquote>
+
+<p>This is the code and libraries to use when developing with OSVR.</p>
+
+<ul>
+<li>For developing plugins, you&rsquo;ll use the @ref PluginKit library.</li>
+<li>For developing applications using the framework, you&rsquo;ll use the @ref ClientKit library.</li>
+</ul>
+
+
+<h2>Binary Snapshot Documentation</h2>
+
+<p>This snapshot contains documentation, example code, JSON schemas, and JSON descriptor files in the <code>share/doc/osvrcore</code> directory. More information is available online.</p>
+
+<h2>Source Documentation</h2>
+
+<p>See <a href="HACKING.md">the HACKING file</a> for some development guidelines for working on this code base itself.</p>
+
+<p>If you&rsquo;re looking at the source tree, not a binary snapshot, you may be interested in <a href="doc/Building.md">build docs</a>. You may also be interested in binary snapshots at <a href="http://access.osvr.com">http://access.osvr.com</a> .</p>
+
+<h2>License and Vendored Projects</h2>
+
+<p>This project: Licensed under the Apache License, Version 2.0.</p>
+
+<ul>
+<li><code>/cmake</code> - Git subtree from <a href="https://github.com/rpavlik/cmake-modules">https://github.com/rpavlik/cmake-modules</a> used at compile-time only. Primarily BSL 1.0, some items under the license used by CMake (BSD-style)</li>
+<li><code>/vendor/eigen-3.2.4</code> - Unpacked release from <a href="http://eigen.tuxfamily.org/">http://eigen.tuxfamily.org/</a> - header-only library under the MPL2 (a file-level copyleft, compatible with proprietary software), define <code>EIGEN_MPL2_ONLY</code> to exclude modules with other license from the build (done in OSVR-Core build system).</li>
+<li><code>/vendor/gtest-1.7.0</code> - Unpacked source from <a href="https://code.google.com/p/googletest/">https://code.google.com/p/googletest/</a> - 3-clause BSD license. Used only for building/running tests.</li>
+<li><code>/vendor/jenkins-ctest-plugin</code> - Git submodule from <a href="https://github.com/rpavlik/jenkins-ctest-plugin">https://github.com/rpavlik/jenkins-ctest-plugin</a>, used only for building/running tests and CI. MIT license.</li>
+<li><code>/vendor/util-headers</code> - subset of headers installed from <a href="https://github.com/rpavlik/util-headers">https://github.com/rpavlik/util-headers</a>. BSL 1.0.</li>
+<li><code>/vendor/vrpn</code> - Git submodule, accessed from <a href="https://github.com/vrpn/vrpn">https://github.com/vrpn/vrpn</a>. BSL 1.0. Contains optional recursive submodules HIDAPI and libjsoncpp.</li>
+</ul>
+
